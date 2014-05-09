@@ -1,7 +1,7 @@
 # vim:fdm=marker
-#####################################
-### Mitschrift ## Einführung in R ###
-#####################################
+# ####################################
+# ## Mitschrift ## Einführung in R ###
+# ####################################
 # Jonas Petong
 # Wintersemester 2012/13
 # 1. Einführung# {{{
@@ -19,48 +19,48 @@ library(plyr)
 
 # setwd("Z:/Zapata/CompStat/")  # Arbeitsordner setzen
 # setwd("/home/zapata/Unimaterialien/Winter1213/CompStat")
-setwd("/home/zapata/tmp/R")
+setwd("/home/zapata/Dokumente/Linux/R")
 
 # }}}
 # Vektoren und Matrizen # {{{
 
 # Einfache Vektoroperationen# {{{
 
-w <- c(seq(1,4,1)); w  #Setzt einen Vektor mit Elementen 1 bis 4
-#alt1: c(seq(1,4,1))
-#alt2: c(1:4)
+w <- c(seq(1,4,1)); w   # Setzt einen Vektor mit Elementen 1 bis 4
+# alt1: c(seq(1,4,1))
+# alt2: c(1:4)
 
 cumsum(w); cumprod(w)
-#Dieser Befehl kummuliert die Einträge des Vektors
-#als Summe bzw. Produkt aufeinander auf.
+# Dieser Befehl kummuliert die Einträge des Vektors
+# als Summe bzw. Produkt aufeinander auf.
 
 cummin(rev(w))
-#Hierbei wird solange abgezählt, bis der niedrigste Wert
-#aus dem Vektor 'w' in umgekehrter Reihenfolge erreicht ist.
+# Hierbei wird solange abgezählt, bis der niedrigste Wert
+# aus dem Vektor 'w' in umgekehrter Reihenfolge erreicht ist.
 
 # }}}
 # Erstellen eines Dataframe# {{{
 
 x <- (c("Holger","Marianne","Tobias","Daniela")); x
-#Setzt einen zweiten Vektor
+# Setzt einen zweiten Vektor
 y <- (c(15,63,23,43)); y
-#Setzt einen dritten Vektor mit Alter
+# Setzt einen dritten Vektor mit Alter
 z <- as.logical(c(0,1,0,1));z
-dat <- data.frame(x,y,z); dat
-#Zusammenfügen der Vektoren zu Data-Frame
-names(dat) <- c("Name","Alter","Geschlecht"); dat                  # Benennen der Variablen
+df.example <- data.frame(x,y,z); df.example
+# Zusammenfügen der Vektoren zu Data-Frame
+names(df.example) <- c("Name","Alter","Geschlecht"); df.example     # Benennen der Variablen
 
 # }}}
 # Auswahl bestimmter Zeilen und Spalten# {{{
 
-subset(dat, Name == c("Tobias","Daniela"), select = Alter)
-#alt1: subset(dat, Name == c("Tobias","Daniela"), c(...))
-#alt2: dat[c(3,4), ]                                               # Alternativer Befehl
+subset(df.example, Name == c("Tobias","Daniela"), select = Alter)
+# alt1: subset(df.example, Name == c("Tobias","Daniela"), c(...))
+# alt2: df.example[c(3,4), ]                                        # Alternativer Befehl
 
-# Gibt lediglich Daten als True aus, die größer gleich vierzig
-subset(dat, Alter >= 40)
-#alt1: subset(dat, y >= 40)
-#alt2: dat[dat$Alter >= 40,]                                       # note that the trailing ',' is obligatory!
+# Gibt lediglich Daten als TRUE aus, die größer gleich vierzig
+subset(df.example, Alter >= 40)
+# alt1: subset(df.example, y >= 40)
+# alt2: df.example[df.example$Alter >= 40,]                         # Das anhängende ',' ist hier notwendig!
 
 # }}}
 
@@ -77,45 +77,43 @@ x[order(x)]                 # Als Ausgabe erhalten wir die sortierte Reihenfolge
 # }}}
 # Sortierung einer Matrix# {{{
 
+# Erstellen des Data Frame
 x <- c(15,63,23,43)
 y <- c(212,182,175,189)
 z <- c(0,1,1,1)
 xyz <- data.frame(x,y,z)
 names(xyz) <- c("Alter", "Größe", "Geschlecht"); xyz
 
-ox <- rev(order(x)); ox
-#alt1: ox <- order(-x); ox
-#alt2: ox <- rev(order(x)); ox
-#Umgekehrte Sortierung des x-Vektors
+# Umgekehrte Sortierung des x-Vektors
+ox <- rev(order(x)); x[ox]
+# alt1: ox <- order(-x); x[ox]
+# alt2: rev(order(xyz[,c(1)])); xyz[,c(1)][ox]
 
 xyz.ox <- xyz[ox,]; xyz.ox
-#Sortiert Zeilen des Dataframe nach der oben
-#festgelegten (umgekehrten) Reihenfolge des x-Vektors.
+# Sortiert Zeilen des Dataframe nach der oben
+# festgelegten (umgekehrten) Reihenfolge des x-Vektors.
 
 # }}}
 
 # }}}
 # Datenexport nach Excel # {{{
 
+# Erzeugen eines Randomisierten Datensatzes
+daten <- df.example; daten
+
 # Als Beispiel exportieren wir unsere Daten "daten"
-daten
-
-#Kopie erstellen
-daten.kopie <- daten
-
-#Nur bestimmte Variablen einlesen in neuen data.frame
-daten.zwei <- data.frame(daten$name, daten$x); daten
+# # Nur bestimmte Variablen einlesen in neuen data.frame
+daten.zwei <- data.frame(daten$Name, daten$Alter); daten.zwei
 write.table(daten, file = "test.csv", sep = ";", dec=",", col.names=NA)
 
-#Ausführlich
+# # Semikolon statt Komma
 write.csv2(daten, file = "test.csv")
 
-#Daten wieder einlesen
-read.csv("test.csv", row.names=1)
+# Daten wieder einlesen
 read.csv2("test.csv", row.names=1)
 read.table(daten, file = "test.csv", sep = ";", dec=",", col.names=NA)
-#Die Endung "csv2" steht für die in Deutschland übliche Trennung mit
-#Semikolon. Für die amerikan. Schreibweise reicht 'read.csv'.
+# Die Endung "csv2" steht für die in Deutschland übliche Trennung mit
+# Semikolon. Für die amerikan. Schreibweise reicht 'read.csv'.
 
 # }}}
 # Zusammenführen von Daten # {{{
@@ -128,29 +126,29 @@ dat <- cbind(dat, Blutgruppe); dat
 dat[,1] <- as.character(dat[,1]); dat
 dat[,3] <- as.character(dat[,3]); dat
 dat <- rbind(dat, c("Thomas",22,FALSE,"B"));dat
-#Fügt vorher festgelegten Vektor (= Blutgruppe) zu Matrix als Spalte hinzu. Für das Anbinden von Zeilen gilt analog: 'rbind'
+# Fügt vorher festgelegten Vektor (= Blutgruppe) zu Matrix als Spalte hinzu. Für das Anbinden von Zeilen gilt analog: 'rbind'
 
 cbind(8, rbind(9, 1:3, 17:19, c("Thomas","Marian","Anna")))
-#Kombination aus beiden Befehlen
+# Kombination aus beiden Befehlen
 
 dat <- dat[-5,]; dat
 dat[,4] <- NULL; dat
-#alt1: dat[,4] <- NULL
-#alt2: dat <- dat[,-4]
-#Mit diesem Befehl lässt sich die hinzugefügte Zeile bzw. Spalte wieder entfernen.
+# alt1: dat[,4] <- NULL
+# alt2: dat <- dat[,-4]
+# Mit diesem Befehl lässt sich die hinzugefügte Zeile bzw. Spalte wieder entfernen.
 
 # }}}
-### Zusammenfügen von Datenfiles nach identifizierenden Variablen# {{{
+# ## Zusammenfügen von Datenfiles nach identifizierenden Variablen# {{{
 
 dat2 <- read.csv2("usa2.csv")[1:5,]
 dat3 <- read.csv2("usa2.csv")[6:9,3:9]
 library(plyr); dat2;dat3
 merge(dat2,dat3, by.x="pid", by.y="sector")
-#alt1: merge(dat2,dat3, by.x="pid", by.y="sector")
-#alt2: join(dat2,dat3, by.x="pid", by.y="sector") [dazu muss
-#zunächst das Paket 'plyr' geladen sein.]
+# alt1: merge(dat2,dat3, by.x="pid", by.y="sector")
+# alt2: join(dat2,dat3, by.x="pid", by.y="sector") [dazu muss
+# zunächst das Paket 'plyr' geladen sein.]
 
-#Vereint den ersten Dataframe mit dem Zweiten, indem übereinstimmungen der Variable 'pid' mit der Variable 'sector' gefunden werden.
+# Vereint den ersten Dataframe mit dem Zweiten, indem übereinstimmungen der Variable 'pid' mit der Variable 'sector' gefunden werden.
 
 # }}}
 
@@ -162,10 +160,10 @@ merge(dat2,dat3, by.x="pid", by.y="sector")
 # Randomisierten Datensatz vorbereiten# {{{
 
 set.seed(123)
-x <- rchisq(1000,5)
-#Vektor mit 1000 (zufälligen) Einträgen
+x <- rchisq(1000,5); x
+# Vektor mit 1000 (zufälligen) Einträgen
 par(las=1, mfrow=c(3,1), cex = .7, mar = c(5, 4, 4, 2) + 0.1)
-#Drei Grafiken pro Seite (von oben nach unten)
+# Drei Grafiken pro Seite (von oben nach unten)
 
 # }}}
 # Histogramme# {{{
@@ -173,30 +171,30 @@ par(las=1, mfrow=c(3,1), cex = .7, mar = c(5, 4, 4, 2) + 0.1)
 hist(x)   #Histogramm erstellen
 length(hist(x)$breaks)    #Zeigt die Anzahl der Klassen im Histogramm.
 
-#Truehist 1
+# Truehist 1
 truehist(x, nbins=5, main = "Truehist1")
-#Histogramm mit anderen Voreinstellungen (Klassenbreiten, Farben etc.). Evtl. muss vorher das Paket 'Mass' geladen werden: library(MASS)
+# Histogramm mit anderen Voreinstellungen (Klassenbreiten, Farben etc.). Evtl. muss vorher das Paket 'Mass' geladen werden: library(MASS)
 
-#Truehist 2
+# Truehist 2
 truehist(x, h = 0.25, main = "Truehist2")
-#alt1: truehist(x, h = 0.25)
-#alt2: truehist(x, breaks = seq(0,20,0.25))
+# alt1: truehist(x, h = 0.25)
+# alt2: truehist(x, breaks = seq(0,20,0.25))
 
-#Truehist 3
+# Truehist 3
 truehist (x, main = "Truehist3", breaks = c(-1,2, seq(3,7,0.5),8,20), prob=TRUE)
-#Mit dem Argument 'prob=TRUE' wird gewährleistet, dass die Histogrammfläche den Wert 1 annimmt und an der y-Achse die Dichte abgetragen wird. Diese wächst proportional zur Fläche einer Klasse.
+# Mit dem Argument 'prob=TRUE' wird gewährleistet, dass die Histogrammfläche den Wert 1 annimmt und an der y-Achse die Dichte abgetragen wird. Diese wächst proportional zur Fläche einer Klasse.
 
 # }}}
 # Optimale Klassenwahl (S. 26):# {{{
 
 nclass.Sturges(x)
-#Empfohlene Klassengröße, basierend auf Spannweite der Daten.
+# Empfohlene Klassengröße, basierend auf Spannweite der Daten.
 
 nclass.scott(x); hist.scott(x, main="Scott")
-#Empfohlene Klassengröße, basierend auf der Varianz.
+# Empfohlene Klassengröße, basierend auf der Varianz.
 
 nclass.FD(x); hist.FD(x, main="Freedman-Diaconis (FD)")
-#Klassenbreite zurückgehend auf Spannweite und Quartilsabstand. Zahl der breaks, entspricht Zahl der Klassen +1.
+# Klassenbreite zurückgehend auf Spannweite und Quartilsabstand. Zahl der breaks, entspricht Zahl der Klassen +1.
 
 # }}}
 # Erstellen des Barplots (S. 27 ff.)# {{{
@@ -205,27 +203,27 @@ nclass.FD(x); hist.FD(x, main="Freedman-Diaconis (FD)")
 
 par(las=1,mfrow=c(3,1))
 x <- sample(1:4, size = 1000, replace = T, prob = rev(seq(0.1,0.8,0.2)))
-#Somit erstellen wir 1000 Realisationen aus dem Ziehen und Zurücklegen der Werte eins bis vier.
+# Somit erstellen wir 1000 Realisationen aus dem Ziehen und Zurücklegen der Werte eins bis vier.
 
 HV.x <- table(x); HV.x
-#Auszählung der Häufigkeiten der vier versch. Ausprägungen.
+# Auszählung der Häufigkeiten der vier versch. Ausprägungen.
 barplot(HV.x, main = "Ein einfacher Barplot", sub ="Multinomialverteilung", col = c("black","grey30","grey70","white"), xlab ="Ausprägungen", ylab = "Häufigkeit", width = c(1,2,3,4), space = 1)
 legend(15,350, c("eins", "zwei", "drei", "vier"), cex = 0.9, fill = c("black","grey30","grey70","white"), ncol = 2)
-#Barplot mit weiteren Einstellungen zu Farbe, Überschrift, Achsenbeschriftung etc.
+# Barplot mit weiteren Einstellungen zu Farbe, Überschrift, Achsenbeschriftung etc.
 
 # }}}
 # Barplot 2# {{{
 
 y <- sample(0:1, size = 1000, replace = TRUE, prob = c(0.3,0.7))
 HV.xy <- table(x,y); HV.xy
-#Häufigkeitsverteilung der zweiten Variable mit 1000 Realisationen einer Binomialverteilten Stichprobe.
+# Häufigkeitsverteilung der zweiten Variable mit 1000 Realisationen einer Binomialverteilten Stichprobe.
 
 barplot(HV.xy, col = c(2,4,6,8), main = "Ein anderer Barplot", sub ="Binomialverteilung", xlab ="Ausprägungen", ylab = "Häufigkeit", names.arg = c("Nullen","Einsen"))
 legend(0.5,600, c("eins", "zwei", "drei", "vier"), cex = 0.9, fill = c(2,4,6,8), ncol = 2)
-#Barplot der Binomialverteilung mit Legende.
+# Barplot der Binomialverteilung mit Legende.
 
 # }}}
-#Barplot 3 # Alle Farben# {{{
+# Barplot 3 # Alle Farben# {{{
 
 z <- sample(1:8, size = 1000, replace = T, prob = seq(0.1,0.8,0.1))
 HV.xz <- table(z)
@@ -240,24 +238,24 @@ legend(0, 200, 1:8, fill = seq(1,8,1), cex = 0.8, ncol = 4)
 # Streudiagramm
 par(las=1,mfrow=c(2,1))
 x <- runif(n = 100, min = 0, max = 100)
-#Somit generieren wir eine mit Zufallszahlen überlagerte lineare Beziehung. Als x-Variable verwenden wir 100 Realisationen einer im Bereich 0 bis 100 gleichverteilten Zufallsvariablen.
+# Somit generieren wir eine mit Zufallszahlen überlagerte lineare Beziehung. Als x-Variable verwenden wir 100 Realisationen einer im Bereich 0 bis 100 gleichverteilten Zufallsvariablen.
 
 y <- 20+x+rnorm(n = 100, mean = 0, sd = 20)
-#Die Y-Variable ist eine Zufallsvariable, deren auf X bed. Erwartungswert eine lineare Funktion der X-Werte ist. Die Realisationen einer normalverteilten Zufallsvariablen (= N(0,20)) werden zu den linearen Funktionswerten addiert.
+# Die Y-Variable ist eine Zufallsvariable, deren auf X bed. Erwartungswert eine lineare Funktion der X-Werte ist. Die Realisationen einer normalverteilten Zufallsvariablen (= N(0,20)) werden zu den linearen Funktionswerten addiert.
 
 plot(x, main = "X-Variable", sub = "Gleichverteilt von 0 bis 100")
 plot(y, main = "Y-Variable", sub = "Überlagerte Normalverteilung")
 plot(x,y, main = "XY-Variablen", sub = "Auf X bedingte Y-Variable", pch = 4, xlim = c(-10,120), ylim = c(-20,200), type = "p")
-#type p (= Punktdiagramm) oder type l.
+# type p (= Punktdiagramm) oder type l.
 
 # }}}
-#Regressionslinien# {{{
+# Regressionslinien# {{{
 
 abline(lm(y ~ x), lwd = 2, col = "red")
 lines(x, lm(y ~ x)$fitted.values, lwd = 3, col = 3)
-#Oben: Eine rote OLS-Regressionslinie (= Methode der kleinsten Quadrate). Unten: OLS-Regression für Wertebereich.
+# Oben: Eine rote OLS-Regressionslinie (= Methode der kleinsten Quadrate). Unten: OLS-Regression für Wertebereich.
 
-#Beispielplot für Aktienverlauf
+# Beispielplot für Aktienverlauf
 set.seed(1)
 y <- cumsum(rnorm(20))
 x <- seq(1,length(y),b = 1)
@@ -267,7 +265,7 @@ legend(0,4,"xy-Aktie", lty=1, col=2, ncol = 4, lwd=2, bty="n")    #Betrachten de
 # }}}
 # Boxplots (S.36)# {{{
 
-#Generieren des Boxplots
+# Generieren des Boxplots
 set.seed(1)
 n <- 21; kC <- cumsum(rnorm(n, mean = .5, sd =1.5))+100; rC <- diff(log(kC))
 plot(rC, main = "Aktienkurs", ylab = "Rendite", xlab = "Zeitstrahl", type = "l")
@@ -276,10 +274,10 @@ col = "yellow",
 main = "Boxplot für Aktienkurs",
 xlab = "Aktienkurs",
 ylab = "Rendite", yaxs = "r")
-#Die mittlere horizontale Linie in der grauen Box stellt den Median dar. Die graue Box wird oben durch den 2. Quartilswert und unten durch den 1. Quartilswert begrenzt. Die gesamte Box gibt somit den totalen Quartilsabstand (= Interquartilerange) an. Oben und unten ragen aus der Box gestrichtelte Linien mit kleinem Querbalken heraus. Diese werden "Whisker" (Schnurrbarthaar) genannt. Die Länge der Whisker ergibt sich aus dem minimum der 1.5-fachen Länge der Box und dem Abstand der entferntesten Beobachtung. Liegen einzelne Beobachtungen außerhalb der Whisker, werden diese einzeln in die Graphik as Punkte eingezeichnet.
+# Die mittlere horizontale Linie in der grauen Box stellt den Median dar. Die graue Box wird oben durch den 2. Quartilswert und unten durch den 1. Quartilswert begrenzt. Die gesamte Box gibt somit den totalen Quartilsabstand (= Interquartilerange) an. Oben und unten ragen aus der Box gestrichtelte Linien mit kleinem Querbalken heraus. Diese werden "Whisker" (Schnurrbarthaar) genannt. Die Länge der Whisker ergibt sich aus dem minimum der 1.5-fachen Länge der Box und dem Abstand der entferntesten Beobachtung. Liegen einzelne Beobachtungen außerhalb der Whisker, werden diese einzeln in die Graphik as Punkte eingezeichnet.
 
 # }}}
-#Statistische Kennzahlen# {{{
+# Statistische Kennzahlen# {{{
 
 stat.rC <- round(c(min(rC),
 max(min(rC),quantile(rC,0.25)-1.5*IQR(rC)),
@@ -291,24 +289,24 @@ max(rC)),4)
 
 names(stat.rC) <- c("min","whisk.dow","quant.25","median","quant.75","whisk.up","max");
 
-#Die für die Graphik relevanten Punkte lassen sich mit folgenden Befehlen ermitteln:
+# Die für die Graphik relevanten Punkte lassen sich mit folgenden Befehlen ermitteln:
 stat.rC   #Alternative 1
 boxplot.stats(rC)$stats
-#Alternative 2: Die Quantile werden hier anders berechnet als oben.
+# Alternative 2: Die Quantile werden hier anders berechnet als oben.
 
 # }}}
 # QQ-Plots (S. 39)# {{{
 
-#QQ-Plots dienen dem visuellen Vergleich zweier Verteilungen. Üblicherweise vergleicht man die empirische Verteilung der vorliegenden Daten mit einer theoretischen Verteilung.
+# QQ-Plots dienen dem visuellen Vergleich zweier Verteilungen. Üblicherweise vergleicht man die empirische Verteilung der vorliegenden Daten mit einer theoretischen Verteilung.
 
 # }}}
 # Kopieren als PDF# {{{
 
 dev.copy(device = pdf, file = "foobar.pdf", width = 4, height = 3, pointsize = 12, onefile = FALSE, paper = "special"); dev.off()
-#Hiermit lassen sich die Grafiken (unter Windows) als PDF-Dateien abspeichern.
+# Hiermit lassen sich die Grafiken (unter Windows) als PDF-Dateien abspeichern.
 
 dev.copy2pdf(device = "pdf", file="/path/to/foobar.pdf", out.type="pdf"); dev.off()
-#Kopieren als PDF unter Linux.
+# Kopieren als PDF unter Linux.
 
 # }}}
 
@@ -321,39 +319,39 @@ n <- rnorm(1000); x <- rnorm(n, 200, 4)
 hist(x, main="Histogramm der Normalverteilung", col=3, prob=1)
 lines(sort(x),dnorm(sort(x),mean(x),sd(x)))
 lines(sort(x),pnorm(sort(x),mean(x),sd(x)),col=2, lwd=2)
-#alt1: lines(sort(x),pnorm(sort(x),mean(x),sd(x)),col=2, lwd=2)
-#alt2: plot.ecdf(x)
-#Ableitung der Normalverteilung
+# alt1: lines(sort(x),pnorm(sort(x),mean(x),sd(x)),col=2, lwd=2)
+# alt2: plot.ecdf(x)
+# Ableitung der Normalverteilung
 
 # }}}
 # Verteilungsfunktion (S. 45)# {{{
 
-#Quantilsfunktion (S. 47)
+# Quantilsfunktion (S. 47)
 median(x)
 quantile(x,prob=0.5)
-#alt1: quantile(x,prob=0.5)
-#alt2: quantile(x, 2/4)
-#alt3: quantile(x, prob=seq(0,1,.5))      #etc.
-#entspricht: sum(x)/length(x)
+# alt1: quantile(x,prob=0.5)
+# alt2: quantile(x, 2/4)
+# alt3: quantile(x, prob=seq(0,1,.5))      #etc.
+# entspricht: sum(x)/length(x)
 
 qda <- quantile(a, probs=seq(0, 1, 0.1))      #Die drei Argumente des seq-Befehls sind der Reihe nach der Anfangs- und der Endwert (hier die Wahrscheinlichkeiten 0 bzw. 1), sowie das Intervall (hier ein zehntel für Dezile, man kann auch (1/10) schreiben).
 
 # }}}
 # Lagemaße # {{{
 
-#Geometrisches Mittel# {{{
+# Geometrisches Mittel# {{{
 
 W <- c(20,30,40)
 w <- W/100    #Wachstumsrate als Dezimalzahl: x1/x0-1
 w <- W/W/100; w
 
 # }}}
-#Varianz# {{{
+# Varianz# {{{
 
 var(x)
 
 # }}}
-#Kovarianzen# {{{
+# Kovarianzen# {{{
 
 x <- 1:10
 set.seed(123)
@@ -365,13 +363,13 @@ y <- sample(1:10, 10, prob=seq(1,20,2))
 cov(x,y)
 
 # }}}
-#Standardabweichung (S. 52)# {{{
+# Standardabweichung (S. 52)# {{{
 
 (sum((x-mean(x))^2/(n-1))^0.5
 sd(x)
 
 # }}}
-#Quartilsabstand# {{{
+# Quartilsabstand# {{{
 
 IQR(x)
 
@@ -518,17 +516,17 @@ hist(runif(1000,-5,1)); dnorm(0)                # Zufällige Gleichverteilung (= 
 
 # Künstliche Erzeugung von Daten# {{{
 
-# entsprechend dem stochastischen Regressionsmodell
 n <- 100
 b0 <- 2
 b1 <- 1
-set.seed(1)
+set.seed(1)     # entsprechend dem Stochastischen Regressionsmodell
 x <- runif(n)
-xb <- b0 + b1*x  #Deterministischer Zusammenhang laut Regressionsmodell
-u <- rnorm(n, sd=.3)     #Einbauen weiterer Störtherme
+xb <- b0 + b1*x        # Deterministischer Zusammenhang laut
+                       # Regressionsmodell
+u <- rnorm(n, sd=.3)   # Einbauen weiterer Störtherme
 y <- xb + u
-mean(y)  #muss 2.51 ergeben
-plot(x,y,pch=19)     #Erzeugen der Punktewolke
+mean(y)                # muss 2.51 ergeben
+plot(x,y,pch=19)       # Erzeugen der Punktewolke
 
 # }}}
 # Methode der kleinsten Quadrate # {{{
@@ -537,16 +535,16 @@ plot(x,y,pch=19)     #Erzeugen der Punktewolke
 
 lines(x,xb,col=4)   #Wahrer (eigtl. unbekannter) Zusammenhang
 
-### Geschätzte Parameter
+# ## Geschätzte Parameter
 b1.d <- cov(x,y)/var(x); b1.d                                    # Erster Steigungsparameter
 b0.d <- mean(y)-b1.d*mean(x); b0.d                               # Zweiter Steigungsparameter
 
-### Regressionswerte
+# ## Regressionswerte
 y.d <- b0.d + b1.d*x
 lines(x,y.d,col=2)                                               # Vermutung über die Daten, mit denen die Punktwolke erzeugt wurde.
 legend(0.1,3.4,c("wahr","geschätzt"),cex=0.9,lwd=1,col=c(4,2))   # cex Skaliert die Größe der Daten Hinzufügen einer Legende
 
-### Geschätzte Residuen
+# ## Geschätzte Residuen
 u.d <- y-y.d
 hist(u.d,nclass=15,main="Histogramm der Gesch. Residuen")
 
@@ -555,12 +553,12 @@ hist(u.d,nclass=15,main="Histogramm der Gesch. Residuen")
 
 lm(y~x)                                                          # lm() berechnet die Regression und viele weitere Regressionsergebnisse
 
-#Y soll auf x regressiert werden, wir erhalten die
-#geschätzten Parameter
+# Y soll auf x regressiert werden, wir erhalten die
+# geschätzten Parameter
 
-#Beachte: Intercept (= Achsenabschnitt) wird autom. hinzugefügt.
-#Ohne Intercept erhalten wir die Regression durch den Ursprung
-#ohne Achsenabschnitt: -1 im Modell (bspw. lm(y~x-1))
+# Beachte: Intercept (= Achsenabschnitt) wird autom. hinzugefügt.
+# Ohne Intercept erhalten wir die Regression durch den Ursprung
+# ohne Achsenabschnitt: -1 im Modell (bspw. lm(y~x-1))
 
 reg <- lm(y~x)
 names(reg)   #Objekt reg im Arbeitsspeicher mit Regressionsergebnissen
@@ -576,7 +574,7 @@ sreg <- summary(reg);sreg    #Die Schätzung von 0,3 ist 0,2823; T-Wert ist Param
 names(sreg)
 sreg$r.squared
 sreg$coef[2,2]
-#Standardfehler des Parameters
+# Standardfehler des Parameters
 
 # }}}
 
@@ -600,7 +598,8 @@ summary(reg2)
 d <- read.csv("usa2.csv")
 reg <- lm(d$wagerate ~ d$sex + d$age)
 summary(reg)
-#Intercept: Ein nulljähriger Mann hat 8,9$ pro Stunde, mit jedem Lebensjahr gibt es 40 Cent hinzu, als Frau erhielte man 7,93$ weniger
+# Intercept: Ein nulljähriger Mann hat 8,9$ pro Stunde, mit jedem Lebensjahr
+# gibt es 40 Cent hinzu, als Frau erhielte man 7,93$ weniger
 
 # }}}
 
