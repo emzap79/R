@@ -1,5 +1,5 @@
-"";"Name";"Alter";"Geschlecht"
-"1";"Holger";15;FALSE
-"2";"Marianne";63;TRUE
-"3";"Tobias";23;FALSE
-"4";"Daniela";43;TRUE
+"";"Name";"Alter";"Größe";"Geschlecht"
+"1";"Holger";15;212;0
+"2";"Marianne";63;182;1
+"3";"Tobias";23;175;0
+"4";"Daniela";43;189;1

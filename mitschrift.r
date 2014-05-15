@@ -1,4 +1,4 @@
-# vim:fdm=marker
+# vim:fdm=marker:isk=.
 # ####################################
 # ## Mitschrift ## Einführung in R ###
 # ####################################
@@ -11,139 +11,208 @@
 library(MASS)       # Lädt die Dokumentation
 library(ggplot2)    # Zum speichern von Grafiken und Plots als PDF
 library(gplots)
+library(gdata)      # ?read.xls: Einlsesen von '.xls' Spreadsheets
 library(graphics)
 library(plyr)
 
-# }}}
+# Bibliotheken betrachten (und hinzufügen)
+.libPaths()
+.libPaths( c( .libPaths(), "~/.R") )
+
+# # Weitere Pakete nachinstallieren
+# download.file("http://www.lepem.ufc.br/jaa/colorout_1.0-3.tar.gz", destfile = "colorout_1.0-3.tar.gz")
+# install.packages("colorout_1.0-3.tar.gz", type = "source", repos = NULL)
+# library("colorout")
+
+# Laden der Pakete# }}}
 # Setzen des eigenen Verzeichnisses# {{{
 
 # setwd("Z:/Zapata/CompStat/")  # Arbeitsordner setzen
 # setwd("/home/zapata/Unimaterialien/Winter1213/CompStat")
 setwd("/home/zapata/Dokumente/Linux/R")
 
-# }}}
+
+# Setzen des eigenen Verzeichnisses# }}}
 # Vektoren und Matrizen # {{{
 
 # Einfache Vektoroperationen# {{{
 
+# repeat
+u <- rep(x = c(1,3,5), each = 3); u     # jedes Element wird wiederholt
+v <- rep(x = c(1,3,5), times = 3); v    # alles wird 3x wiederholt
+
+# seq
 w <- c(seq(1,4,1)); w   # Setzt einen Vektor mit Elementen 1 bis 4
 # alt1: c(seq(1,4,1))
 # alt2: c(1:4)
 
+# cumsum/-prod
 cumsum(w); cumprod(w)
 # Dieser Befehl kummuliert die Einträge des Vektors
 # als Summe bzw. Produkt aufeinander auf.
 
+# cummin
 cummin(rev(w))
 # Hierbei wird solange abgezählt, bis der niedrigste Wert
 # aus dem Vektor 'w' in umgekehrter Reihenfolge erreicht ist.
 
-# }}}
+# Einfache Vektoroperationen# }}}
+# Erstellen einer Matrix# {{{
+
+# mit hilfe der befehle rbind() und cbind()
+mat.1 <- cbind(seq(1,4),3:6); mat.1
+mat.1 <- rbind(7:9, c(1,5,2)); mat.1
+
+# mit dem matrix-befehl
+mat.2 <- matrix(data = LETTERS[1:6], nrow = 2); mat.2
+mat.3 <- matrix(data = c(LETTERS[1:3],c(4:6)), ncol = 2); mat.3
+
+# zeilen-/spaltenbeschriftung
+colnames(mat.3) <- c("alpha","numb")
+rownames(mat.3) <- c("eins","zwei","drei"); mat.3
+
+# Erstellen einer Matrix# }}}
 # Erstellen eines Dataframe# {{{
 
+# setzt einen neuen vektor, einen zweiten vektor mit alter und einen
+# dritten vektor "geschlecht"
 x <- (c("Holger","Marianne","Tobias","Daniela")); x
-# Setzt einen zweiten Vektor
 y <- (c(15,63,23,43)); y
-# Setzt einen dritten Vektor mit Alter
 z <- as.logical(c(0,1,0,1));z
-df.example <- data.frame(x,y,z); df.example
-# Zusammenfügen der Vektoren zu Data-Frame
-names(df.example) <- c("Name","Alter","Geschlecht"); df.example     # Benennen der Variablen
 
-# }}}
+# zusammenfügen der vektoren zu data-frame
+df.example <- data.frame(name = x, age = y, sex = z); df.example
+# # alt: names(df.example) <- c("name","age","sex")
+
+# bearbeiten des dataframe
+df.next.frame <- transform(df.example, effort = c(NA,"much","little","much")); df.next.frame
+
+
+# Erstellen eines Dataframe# }}}
 # Auswahl bestimmter Zeilen und Spalten# {{{
 
-subset(df.example, Name == c("Tobias","Daniela"), select = Alter)
-# alt1: subset(df.example, Name == c("Tobias","Daniela"), c(...))
-# alt2: df.example[c(3,4), ]                                        # Alternativer Befehl
+# zellen aus dem data.frame
+subset(df.example, name == c("Tobias","Daniela"), select = age)
+# # alt1: subset(df.example, name == c("Tobias","Daniela"), c(...))
+# # alt2: df.example[c(3,4),]
 
 # Gibt lediglich Daten als TRUE aus, die größer gleich vierzig
-subset(df.example, Alter >= 40)
-# alt1: subset(df.example, y >= 40)
-# alt2: df.example[df.example$Alter >= 40,]                         # Das anhängende ',' ist hier notwendig!
+subset(df.example, age >= 40)
+# # alt1: subset(df.example, y >= 40)
+# # alt2: df.example[df.example$age >= 40,]     # Das hintanstehende 'Komma' ist hier notwendig!
 
-# }}}
+# Auswahl bestimmter Zeilen und Spalten# }}}
+# Zusammenfassen als Liste# {{{
 
-# }}}
-# Sortierung von Daten # {{{
+# erstellen der liste
+this.is.it <- list(a.data.frame = df.example, a.matrix = mat.3); this.is.it
+
+# namen der matrix ändern
+names(this.is.it)[2] <- "b.matrix"; this.is.it[2]  # zweites element der liste
+
+# ein listenelement hinzufügen/löschen
+this.is.it$lets.get.it.on.baby <- rep(2:4, t=2); this.is.it
+this.is.it$lets.get.it.on.baby <- NULL; this.is.it
+
+# Zusammenfassen als Liste# }}}
+# Vektoren als Faktor darstellen# {{{
+
+# neuer vektor
+vec.traff.lights <- c("red", "green", "yellow", "yellow")
+
+# faktorisieren & levels des factors ausgeben
+fac.traff.lights <- factor(x = vec.traff.lights)
+levels(fac.traff.lights)
+# # die "levels" werden auch bei einfacher ausgabe der faktorwerte mit angegeben.
+
+# faktor in rangfolge bringen
+fac.traff.lights <- ordered(x = fac.traff.lights, levels = c("green", "yellow", "red"))
+fac.traff.lights
+# # die kategorien des faktors werden in eine reihenfolge gestellt. bei obigem
+# # beispiel: nach grün folgt gelb folgt rot (-> chronologisch)
+
+# Vektoren als Faktor darstellen# }}}
+
+# Vektoren und Matrizen # }}}
+# Sortierung von Daten# {{{
 
 # Sortieren eines Vektors# {{{
 
 x <- c(2,3,1,4); x
 order(x)                    # In welcher Reihenfolge muss zugegriffen
-                            # werden, damit der Datensatz am Ende sortiert ist.
+                        # werden, damit der Datensatz am Ende sortiert ist.
 x[order(x)]                 # Als Ausgabe erhalten wir die sortierte Reihenfolge.
 
-# }}}
+
+# Sortieren eines Vektors# }}}
 # Sortierung einer Matrix# {{{
 
 # Erstellen des Data Frame
+w <- (c("Holger","Marianne","Tobias","Daniela"))
 x <- c(15,63,23,43)
 y <- c(212,182,175,189)
-z <- c(0,1,1,1)
-xyz <- data.frame(x,y,z)
-names(xyz) <- c("Alter", "Größe", "Geschlecht"); xyz
+z <- c(0,1,0,1)
+df.wxyz <- data.frame(w,x,y,z)
+names(df.wxyz) <- c("Name","Alter", "Größe", "Geschlecht"); df.wxyz
+# alt: rownames() für zeilen- und colnames() für spaltenbeschriftung
 
 # Umgekehrte Sortierung des x-Vektors
 ox <- rev(order(x)); x[ox]
 # alt1: ox <- order(-x); x[ox]
 # alt2: rev(order(xyz[,c(1)])); xyz[,c(1)][ox]
 
-xyz.ox <- xyz[ox,]; xyz.ox
+wxyz.ox <- df.wxyz[ox,]; wxyz.ox
 # Sortiert Zeilen des Dataframe nach der oben
 # festgelegten (umgekehrten) Reihenfolge des x-Vektors.
 
-# }}}
 
-# }}}
-# Datenexport nach Excel # {{{
+# Sortierung einer Matrix# }}}
 
-# Erzeugen eines Randomisierten Datensatzes
-daten <- df.example; daten
-
-# Als Beispiel exportieren wir unsere Daten "daten"
-# # Nur bestimmte Variablen einlesen in neuen data.frame
-daten.zwei <- data.frame(daten$Name, daten$Alter); daten.zwei
-write.table(daten, file = "test.csv", sep = ";", dec=",", col.names=NA)
-
-# # Semikolon statt Komma
-write.csv2(daten, file = "test.csv")
-
-# Daten wieder einlesen
-read.csv2("test.csv", row.names=1)
-read.table(daten, file = "test.csv", sep = ";", dec=",", col.names=NA)
-# Die Endung "csv2" steht für die in Deutschland übliche Trennung mit
-# Semikolon. Für die amerikan. Schreibweise reicht 'read.csv'.
-
-# }}}
+# Sortierung von Daten# }}}
 # Zusammenführen von Daten # {{{
 
 # Hinzufügen von Zeilen und Spalten# {{{
 
-Blutgruppe <- (c("A","B","0","AB")); Blutgruppe
-dat <- cbind(dat, Blutgruppe); dat
+Blutgruppe <- (c("A","B","0","AB")); df.wxyz
+df.bg <- cbind(df.wxyz, Blutgruppe); df.bg
 
-dat[,1] <- as.character(dat[,1]); dat
-dat[,3] <- as.character(dat[,3]); dat
-dat <- rbind(dat, c("Thomas",22,FALSE,"B"));dat
-# Fügt vorher festgelegten Vektor (= Blutgruppe) zu Matrix als Spalte hinzu. Für das Anbinden von Zeilen gilt analog: 'rbind'
+df.bg[,1] <- as.character(df.bg[,1]); df.bg[,1]
+df.bg[,4] <- as.numeric(df.bg[,4]); df.bg[,4]
+df.bg <- rbind(df.bg, c(as.character("Thomas"),22,188,as.numeric(FALSE),"B")); df.bg
+df.bkp <- df.bg
+# Fügt vorher festgelegten Vektor (= Blutgruppe) zu Matrix als Spalte hinzu.
+# Für das Anbinden von Zeilen gilt analog: 'rbind'
 
-cbind(8, rbind(9, 1:3, 17:19, c("Thomas","Marian","Anna")))
-# Kombination aus beiden Befehlen
+# sortieren des data.frame nach dem Alter der untersuchungsobjekte
+df.bg <- df.bkp
+s.x <- order(df.bg[,2]); s.x
+df.bg[s.x,]
 
-dat <- dat[-5,]; dat
-dat[,4] <- NULL; dat
-# alt1: dat[,4] <- NULL
-# alt2: dat <- dat[,-4]
-# Mit diesem Befehl lässt sich die hinzugefügte Zeile bzw. Spalte wieder entfernen.
+# cbind, rbind - Kombination aus beiden Befehlen
+cbind("first col", rbind("first row", 1:3, 17:19, c("Thomas","Marian","Anna")))
+# die menge an spalten richtet sich nach der anzahl an argumenten
+# innerhalb des cbind befehls, vice versa mit zeilen.
+
+# löschen einer Zeile des Dataframe
+df.bg <- df.bg[-5,]; df.bg
+# alt: df.bg[5,] <- NULL
 
 # }}}
-# ## Zusammenfügen von Datenfiles nach identifizierenden Variablen# {{{
+# Zusammenfügen von Datenfiles nach identifizierenden Variablen# {{{
 
-dat2 <- read.csv2("usa2.csv")[1:5,]
-dat3 <- read.csv2("usa2.csv")[6:9,3:9]
-library(plyr); dat2;dat3
-merge(dat2,dat3, by.x="pid", by.y="sector")
+dat1 <- read.csv("usa.csv", h=T); dat1[1:5,]
+dat2 <- read.csv("usa.csv", h=T)[1:4,1:3]
+dat3 <- read.csv("usa.csv", h=T)[1:4,4:6]
+
+dat2;dat3
+
+# merge(dat2, dat3, by.x="pid", by.y="sector")
+dat.merge <- merge(dat2, dat3, all=T); dat.merge
+dat.merge <- merge(dat2, dat3, by.x="pid", by.y="sector")
+dat.merge     # beim zweiten beispiel werden die daten dort zusammengefügt, für
+              # welche "pid" und "sector" denselben wert annehmen. Die Option
+              # "all=T" lässt die gesamten Daten beider Tabelle miteinander vereinen.
+
 # alt1: merge(dat2,dat3, by.x="pid", by.y="sector")
 # alt2: join(dat2,dat3, by.x="pid", by.y="sector") [dazu muss
 # zunächst das Paket 'plyr' geladen sein.]
@@ -152,9 +221,49 @@ merge(dat2,dat3, by.x="pid", by.y="sector")
 
 # }}}
 
-# }}}
+# Zusammenführen von Daten # }}}
+# Datenimport / -export nach Excel # {{{
 
-# }}}
+# Tabelle erstellen# {{{
+
+# Erzeugen eines Randomisierten Datensatzes
+daten <- df.wxyz; daten
+df.wxyz.copy <- data.frame(daten$Name, daten$Alter); df.wxyz.copy
+
+# Als Beispiel exportieren wir unsere Daten "daten"
+# # Nur bestimmte Variablen einlesen in neuen data.frame
+write.table(daten, file = "test.csv", sep = ";", dec=",", col.names=NA)
+read.table('test.csv',header=T,sep=";",row.names=1) # http://stackoverflow.com/a/11608601
+#             |         |       |         |
+#             |         |       |         +-- Lege Spalte der Zeilenbeschriftung fest
+#             |         |       +------------ Trennzeichen
+#             |         +-------------------- Spaltenbeschriftung (T/F)
+#             +------------------------------ Dateiname
+
+# Tabelle erstellen# }}}
+# CSV einlesen# {{{
+
+# Eine Excel-Tabelle muss zunächst in das .csv format konvertiert
+# werden, in der kommandozeile per: ssconvert -S in.xlsx out.csv
+
+# Semikolon statt Komma
+# Vorher erzeugten Datensatz wieder einlesen
+read.csv2("test.csv", row.names=1,fill=T, )
+
+csv.ew <- read.csv("epex_wind.csv",fill=T,blank.lines.skip=T); csv.ew[12:20,0:6]
+# Die Endung "csv2" steht für die in Deutschland übliche Trennung mit
+# Semikolon. Für die amerikan. Schreibweise reicht 'read.csv'.
+
+# CSV einlesen# }}}
+# Werte auslesen# {{{
+
+nrow(csv.ew); ncol(csv.ew)
+
+# Werte auslesen# }}}
+
+# Datenimport / -export nach Excel # }}}
+
+# 1. Einführung# }}}
 # 2. Graphiken# {{{
 
 # Randomisierten Datensatz vorbereiten# {{{
@@ -165,11 +274,11 @@ x <- rchisq(1000,5); x
 par(las=1, mfrow=c(3,1), cex = .7, mar = c(5, 4, 4, 2) + 0.1)
 # Drei Grafiken pro Seite (von oben nach unten)
 
-# }}}
+# Randomisierten Datensatz vorbereiten# }}}
 # Histogramme# {{{
 
-hist(x)   #Histogramm erstellen
-length(hist(x)$breaks)    #Zeigt die Anzahl der Klassen im Histogramm.
+hist(x)                 # Histogramm erstellen
+length(hist(x)$breaks)  # Zeigt die Anzahl der Klassen im Histogramm.
 
 # Truehist 1
 truehist(x, nbins=5, main = "Truehist1")
@@ -211,7 +320,8 @@ barplot(HV.x, main = "Ein einfacher Barplot", sub ="Multinomialverteilung", col 
 legend(15,350, c("eins", "zwei", "drei", "vier"), cex = 0.9, fill = c("black","grey30","grey70","white"), ncol = 2)
 # Barplot mit weiteren Einstellungen zu Farbe, Überschrift, Achsenbeschriftung etc.
 
-# }}}
+
+# Barplot 1# }}}
 # Barplot 2# {{{
 
 y <- sample(0:1, size = 1000, replace = TRUE, prob = c(0.3,0.7))
@@ -222,7 +332,8 @@ barplot(HV.xy, col = c(2,4,6,8), main = "Ein anderer Barplot", sub ="Binomialver
 legend(0.5,600, c("eins", "zwei", "drei", "vier"), cex = 0.9, fill = c(2,4,6,8), ncol = 2)
 # Barplot der Binomialverteilung mit Legende.
 
-# }}}
+
+# Barplot 2# }}}
 # Barplot 3 # Alle Farben# {{{
 
 z <- sample(1:8, size = 1000, replace = T, prob = seq(0.1,0.8,0.1))
@@ -230,9 +341,10 @@ HV.xz <- table(z)
 barplot(HV.xz, col = 1:8, main = "Barplot der Farben", sub = "Multinomialverteilung", xlab = "Ausprägungen", ylab = "Häufigkeit", names.arg = LETTERS[1:8])
 legend(0, 200, 1:8, fill = seq(1,8,1), cex = 0.8, ncol = 4)
 
-# }}}
 
-# }}}
+# Barplot 3 # Alle Farben# }}}
+
+# Erstellen des Barplots (S. 27 ff.)# }}}
 # Erstellen eines Punktediagramms (S. 31 ff.)# {{{
 
 # Streudiagramm
@@ -310,7 +422,7 @@ dev.copy2pdf(device = "pdf", file="/path/to/foobar.pdf", out.type="pdf"); dev.of
 
 # }}}
 
-# }}}
+# 2. Graphiken# }}}
 # 3. Häufigkeitsverteilungen # {{{
 
 # Häufigkeitsverteilung (S. 44) # {{{
@@ -442,7 +554,7 @@ addmargins(margin.table(tab,1:2)
 
 # }}}
 
-# }}}
+# 3. Häufigkeitsverteilungen # }}}
 # 4. While & For-Schleifen # {{{
 
 # Schleife # {{{
@@ -468,7 +580,7 @@ max(tapply(tab1$wagerate,tab1$sector,myf))
 
 # }}}
 
-# }}}
+# 4. While & For-Schleifen # }}}
 # 5. Wahrscheinlichkeiten # {{{
 
 # Namen der Verteilung, Bsp. norm für Normalverteilung
@@ -511,7 +623,7 @@ hist(runif(1000,-5,1)); dnorm(0)                # Zufällige Gleichverteilung (= 
 
 # }}}
 
-# }}}
+# 5. Wahrscheinlichkeiten # }}}
 # 6. Regressionsanalyse (S. 103)# {{{
 
 # Künstliche Erzeugung von Daten# {{{
@@ -603,7 +715,7 @@ summary(reg)
 
 # }}}
 
-# }}}
+# 6. Regressionsanalyse (S. 103)# }}}
 # 7. Funktionen und Rechenoperationen # {{{
 
 # Sinus & Cosinus# {{{
@@ -620,4 +732,8 @@ legend(-3, .9, ex.cs1, lty=1:2, col=2:3, adj = c(0, .6))     #Zu finden im Anhan
 
 # }}}
 
-# }}}
+# 7. Funktionen und Rechenoperationen
+
+#######
+### EOF
+#######
