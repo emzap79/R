@@ -1,0 +1,84 @@
+% subsect %%% binare_variable %{{{
+Übung 3.3: Betrachten Sie die Regression $Y_i = \beta_0 + \beta_1 X_i + u_i$ , wobei $X_i$
+eine binäre Variable ist. Bezeichne mit $\bar y_0$ bzw. $\bar y_1$ das Stichproben-Mittel
+über alle Beobachtungen mit $X = 0$ bzw. $X = 1$.\\
+
+Behauptung:
+\begin{align*}
+\hat\beta_1 = \bar y_1 - \bar y_0,\, \hat\beta_0 = \bar y_0 \text{ und }
+\hat\beta_0 +\hat\beta_1&=\bar y_1\marginnote{$n_0 =$ Anzahl der Beobachtungen mit $x=0$\\$n_1=$Anzahl der Beobachtungen mit $x=1$}\\
+\end{align*}
+
+Beachte im Folgenden:
+\begin{align}
+	\sum^{n}_{i=1} x_i &= n_1\\
+	\bar x &\stackrel{1)}{=} \frac{n_1}{n}\\
+	\sum^{n}_{i=1} y_i&=\frac{1}{n_1} \sum^{n}_{i=1} x_i y_i=\bar y_1
+\end{align}
+
+\begin{align}
+	\begin{split}
+		\sum^{n}_{i=1} (x_i - \bar x)^2 &= \sum^{n}_{i=1} (x_i^2 - 2x_i \bar x + \bar x^2)\\
+					&=(\sum^{n}_{i=1} x_i) - n\bar x^2 \\
+				 &\stackrel{1)2)}{=}n_1 -n \left( \frac{n_1}{n} \right)^2\\
+		   &=n_1 - \textcolor{blue}{n}\frac{n_1^2}{\textcolor{blue}{n}^2}=\frac{n_1 n - n_1^2}{n}\\
+	&= \frac{n_1(n-n_1)}{n}\\
+ &=\frac{n_1\cdot n_0}{n}=0\\
+	\end{split}\marginnote{$x_i \mDef \bar x$ und $x_i^2 \mDef x_i$}
+\end{align}
+
+\begin{align}
+	\begin{split}
+		\bar y_1 +  \bar y_0 &=  y_i\\
+		n_1 \bar y_1 + n_0 \bar y_0 &= \sum^{n}_{i=1} y_i
+		\marginnote{dividiert durch $n$:\\$\bar y = \frac{n_1}{n} \bar y_1 +
+		\frac{n_0}{n}\bar y_0$}
+	\end{split}
+\end{align}
+
+Damit:
+
+\begin{align}
+	\hat\beta_1&=\frac{\sum (x_i - \bar x)(y_i - \bar y)}{\sum^{n}_{i=1} (x_i - \bar x)^2}
+\end{align}
+
+\begin{align*}
+	&=\frac{\sum x_i(y_i-\bar y)-\overbrace{\comment{\bar x(y_i-\bar
+y)}}^{=0}}{\sum (x_i - \bar x)^2}
+\marginnote{
+	es gilt $\sum (x_i - \bar x)^2\stackrel{4)}{=} \frac{n_1 n_0}{n} $
+}\\
+%%%
+&\stackrel{1)4)}{=}\frac{\sum x_iy_i -{n_1}\cdot\bar y}{\left(
+\frac{n_1 n_0}{n}
+\right)}\\
+%%%
+&\stackrel{3)}{=}\frac{\textcolor{red}{n_1}\bar {y_1} -
+\textcolor{red}{n_1}\bar y}{\left( \frac{\textcolor{red}{n_1} n_0}{n} \right)}\\
+%%%
+&=\frac{n}{n_0}\left( \bar y_1 - \bar y \right)
+\stackrel{5)}{=}\frac{n}{n_0}\left( \bar y_1 - \left(\frac{n_1}{n}\bar y_1 + \frac{n_0}{n}\bar y_0
+\right) \right)\\
+%%%
+&=\frac{n}{n_0}\left( \textcolor{blue}{\bar y_1} - \frac{n_1}{n}\textcolor{blue}{\bar y_1} - \frac{n_0}{n}\bar y_0 \right)\\
+%%%
+&=\textcolor{blue}{\bar y_1} (\frac{n}{n_0}-\frac{\comment{n}\cdot
+n_1}{n_0\cdot \comment{n}})-\bar y_0\frac{\comment{n}\cdot n_0}{n_0 \cdot
+\comment{n}}\marginnote{da binomial: $n - n_1 = n_0$}\\
+%%%
+&=\bar y_1 \frac{n_0}{n_0} - \bar y_0 \frac{n_0}{n_0}\\
+%%%
+&=\bar y_1 -\bar y_0
+\end{align*}
+
+ Daher:
+\begin{align*}
+\hat\beta_0 &=\bar y - \hat\beta_1 \bar x\\
+			&\stackrel{2)5)6)}{=\frac{n_1}{n}}\bar y_1 + \frac{n_0}{n}\bar y_0 -
+	\left( \bar y_1 - \bar y_0 \right)\frac{n_1}{n}\\
+	&=\frac{n_0 + n_1}{n}\bar y_0 \\
+	&=\bar y_0
+ \end{align*}
+\newline
+
+% subsect %%% binare_variable (end) %}}}

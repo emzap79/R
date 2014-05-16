@@ -1,0 +1,16 @@
+% subsect %%% binare_variable %{{{
+Vorl. 4-24: Standardfehler eines binären Regressors\\
+
+\noindent
+{\bfseries Standardfehler falls Verteilung Homoskedastisch:}\\
+$\hat{=}$ Gleiche Gruppenvarianzen
+\begin{align*}
+	SE = \sqrt{\frac{s_s^2}{n_s}+\frac{s_l^2}{n_l}}\marginnote{mit $s_i^2=SER_i$ (Stichproben-Standardabweichung)}
+\end{align*}
+{\bfseries Standardfehler unter Heteroskedastie:}\\
+$\hat{=}$ Ungleiche Gruppenvarianzen
+\begin{align*}
+SE = s_p\sqrt{\frac{1}{n_s}+\frac{1}{n_l}}\marginnote{$s_p = $\frqq gepoolter\flqq{} Schätzer\\von  $\sigma^2$  sofern $ \sigma^2_l = \sigma^2_l$}
+\end{align*}
+
+% subsect %%% binare_variable (end) %}}}

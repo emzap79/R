@@ -1,0 +1,35 @@
+% sssec %%% unbiasedness_beta_1 %{{{
+Unter der Annahme des Regressionsmodells: $y_i = \beta_ 0 + \beta_ 1 x_i +
+u_i,\, i = 1, \ldots, n$ soll für den OLS-Schätzer $\hat\beta_1$ gelten:
+$E(\hat\beta_1)=\beta_1$\\\\
+
+\begin{align*}
+	\hat\beta_1-\beta_1&=\frac{\sum^{n}_{i=1} (x_i - \bar x)(y_i-\bar y_i)}{\sum^{n}_{i=1}
+(x_i - \bar x)^2}-\beta_1
+\end{align*}\\
+
+Beweis:
+
+\begin{align*}
+	\hat\beta_1 - \beta_1&=\frac{
+	\sum (x_i - \bar x)
+(\overbrace{(\comment{\beta_0}+\beta_1 x_i +
+u_i)}^{y_i}-\overbrace{(\comment{\beta_0}+\beta_1 \bar x + \bar u)}^{\bar y})
+} {\sum (x_i-\bar x)^2}-\beta_1\marginnote{es gilt: $\bar y = \frac{1}{n} \sum y_i = \beta_0 + \beta_1 \bar x + \bar u$}\\
+%%%
+&=\frac{\sum (x_i - \bar x)\left( \beta_1(x_i - \bar x) + \comment{(u_i -\bar u)} \right)}{\sum (x_i - \bar x)^2} -\beta_1
+\marginnote{
+		$(u_i - \bar u) = 0\text{, da:~} u_i - \overbrace{\frac{1}{n}\sum u_i}^{= \bar u}$\\ %= u_i(\underbrace{1-\frac{1}{n}\sum 1}_{=0})$\\
+		nach LSA 1 ist $E(u|X=x_i)=0$
+}\\
+%%%
+&=\underbrace{\beta_1 \cdot \frac{\sum (x_i - \bar x)^2}{\sum (x_i - \bar x)^2} - \beta_1 }_{=0}
+\end{align*}
+Hieraus folgt, dass $$E(\hat\beta_1) - \beta_1 = 0$$
+\marginnote{
+\noindent
+Also impliziert die KQ Annahme \#1, dass $E(\hat\beta_1) = \beta_1$. Das heißt,
+$\hat\beta_1$ {\itshape ist ein unverzerrter Schätzer für} $\beta_1$
+}
+
+% sssec %%% unbiasedness_beta_1 (end) %}}}

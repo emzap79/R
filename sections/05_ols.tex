@@ -1,0 +1,148 @@
+% subsect %%% kleinster_quadrate_schatzer %{{{
+
+{\itshape Der OLS Schätzer minimiert die durchschnittlichen quadrierten Abweichungen zwischen den wahren Werten von $y_i$ und dem geschätzten Wert (auf der Regressionsgerade).}\\\\
+\subsection{Least Square Assumptions (LSA)}
+\label{subsect:lsa}
+% subsect %%% least_square_assumptions %{{{
+
+\begin{enumerate}
+	\item Die bedingte Verteilung von $u$ gegeben $X$ hat einen Mittelwert von null,
+		das heißt, $E (u|X = x) = 0.$
+		Dies impliziert, dass $\hat\beta_1$ unverzerrt ist (siehe Herleitung
+		\ref{ssec:unbiasedness_beta_1}).
+	\item $(X_i, Y_i ), i = 1,..., n$, sind gemeinsam \emph {identically and
+		independently distributed (i.i.d)} und liefern
+		damit die Stichprobenverteilung von $\hat\beta_0$ und $\hat\beta_1$.
+		Dies gilt sofern $X$, $Y$ zufällig gezogen wurden.
+	\item Größere Ausreißer von $X$ oder $Y$ sind selten:\\
+		$E(X^4)<\infty,\;E(Y^4)<\infty$
+		\begin{enumerate}
+			\item 		 Technisch, $X$ und $Y$ haben endliche vierte Momente
+			\item		 Ausreißer können zu bedeutungslosen Ergebnissen von $\hat\beta_1$ führen
+		\end{enumerate}
+		% \hline
+	\item $u$ ist homoskedastisch% / Keine perfekte Mutikollinearität.
+		\marginnote{
+			Die Annahmen 4 und 5 sind restriktiver und für die Praxis weniger relevant als LSA eins bis drei.
+		}
+	\item $u$ ist $N(0, \sigma^2 )$ verteilt.
+\end{enumerate}
+
+% subsect %%% kq_annahmen (end) %}}}
+
+\subsection{Minimierungsproblem: Aus der Vorlesung (3-11)}
+\label{subsect:aus_der_vorlesung}
+% subsect %%% aus_der_vorlesung %{{{
+
+Zeigen Sie, dass der Kleinste-Quadrate Schätzer $\hat\beta$ dem
+Stichproben-Mittelwert entspricht. Betrachte hierzu das
+Regressionsmodell: $y_i = \beta + u_i$,\enskip\enskip $i=1,\ldots,n$\\
+
+Dem OLS-Schätzer geht die Frage voraus, wie sich $\beta_0$ und $\beta_1$ aus
+den Daten schätzen lassen. Da $\bar y$ der Kleinste Quadrate Schätzer für
+$\mu_y$ ist, löst $\bar y$: 
+$$\underset{m}{min} \sum^{n}_{i=1}\left( y_i - m \right)^2$$
+
+Demgegenüber steht der OLS-Schätzer, dieser löst:
+$$\underset{b_0,\,b_1}{min} \sum^{n}_{i=1}\left[ y_i - (b_0 +b_1x_i)
+\right]^2$$\\
+
+\begin{align*}
+	\text{Bedingung erster Ordnung:}\\
+	0&\overset{!}{=}\frac{\partial}{\partial b_1} \sum^{n}_{i=1}
+	\left[ y_i - b_1xi \right]^2\\
+	&=\sum^{n}_{i=1} x_i\cdot2 \left[ y_i - b_1 x_i
+\right]\marginnote{Innere Ableitung$\,\times\,$Äußere Ableitung}\\
+&=\textcolor{red}{2} \sum^{n}_{i=1} x_iy_i -\textcolor{red}{2}b_1 \sum^{n}_{i=1} x_i^2\\
+b_1&=\hat\beta_1=\dfrac{\sum^{n}_{i=1} x_iy_i}{\sum^{n}_{i=1} x_i^2}
+\marginnote{$\hat\beta_1=\frac{\sum^{n}_{i=1} (x_i - \bar x)(y_i - \bar y)}{\sum^{n}_{i=1} (x_i-\bar x)^2}$}\\
+\hat\beta_0 &= \bar y - \bar x \hat\beta_1
+	\end{align*}
+
+Das Modell lässt sich umschreiben als: $y_i=\beta_1 \cdot
+\underbrace{x_i}_{x_i=1} + u_i.$
+Eingesetzt in die Formel: $$\hat\beta_1= \dfrac{\sum^{n}_{i=1} 1\cdot y_i}{\sum^{n}_{i=1} 1^2}=\dfrac{1}{n} \sum^{n}_{i=1} y_i
+\marginnote{Stichprobenmittelwert der Beobachtungen $y_i$}$$
+
+	% subsect %%% aus_der_vorlesung (end) %}}}
+
+\subsection{Omitted Variable Bias}
+\label{sec:omitted_variable_bias}
+% subsect %%% omitted_variable_bias %{{{
+
+
+Als \emph{omitted variable bias} wird die Verzerrung des LS-Schätzers beschrieben,
+welche als Folge einer ausgelassenen Variable auftritt. Damit eine
+Variable \emph{Z} als \emph{omitted variable} bezeichnet wird, müssen
+die folgenden Voraussetzungen eintreffen. Sie \ldots
+
+\begin{itemize}
+	\item ist eine Determinante von $Y$ (und übt somit einen Einfluss auf sie aus) {\bfseries und}
+	\item korreliert mit dem Regressor $X$, d.h. $Corr(Z,X) \neq{0}$
+\end{itemize}
+
+wenn beide Bedingungen erfüllt sind, dann ist der LS-Schätzer $(\hat \beta_1)$ verzerrt! Es gilt somit:
+
+\begin{align*}
+	\hat \beta_1 \overset{P}{\rightarrow} \beta_1 + \left(
+	\frac{\sigma_u}{\sigma_x} \right) \rho_{x_u}\text{~mit~} \rho_{x_u} \neq 0
+\end{align*}
+%}}}
+
+\subsection{Gauß-Markov Theorem}
+\label{sec:gauss_markov_theorem}
+% subsect %%% gauss_markov_theorem %{{{
+Unter den LSA 1--4 hat $\hat\beta_1$ die kleinste Varianz unter
+allen linearen bedingt unverzerrten Schätzern (Schätzer, die lineare
+Funktionen von $Y_1, \ldots, Y_n$ sind).
+\begin{align*}
+	\hat\beta_1 - \beta_1 &= \frac{\sum^{n}_{i=1} (x_i - \bar x)u_i}{\sum^{n}_{i=1} (x_i - \bar x)^2}
+&=\sum^{n}_{i=1} w_i u_i\marginnote{mit $w_i=\frac{ (x_i - \bar x)}{\sum^{n}_{i=1} (x_i - \bar x)^2}$}
+\end{align*}
+Das G-M Theorem sagt, dass unter allen möglichen \{$w_i$\}, die KQ
+Gewichte die kleinste $Var(\hat\beta_1)$ ergeben.\marginnote{Folie 4-40}
+%}}}
+
+\subsection{Multikollinearität}
+\label{sec:multikollinearitat}
+% subsect %%% multikollinearitat %{{{
+
+\textbf{Perfekte Multikollinearität} liegt vor, wenn einer der Regressoren eine exakte
+lineare Funktion der anderen Regressoren ist und resultiert in der Regel aus
+einem Fehler in der Wahl der Regressoren, oder aus seltsamen Daten. Die Lösung
+für perfekte Multikollinearität ist es, die Liste der Regressoren so zu
+modifizieren, dass nicht länger perfekte Multikollinearität vorliegt.\\
+
+\textbf{Imperfekte Multikollinearität} tritt auf, wenn zwei oder mehr
+Regressoren sehr hoch korreliert sind, die Korrelation jedoch nicht genau ±1
+ist. Imperfekte Multikollinearität führt also typischerweise zu großen
+Standardfehlern für einen oder mehrere der Koeffizienten.\\
+
+Für die Schätzung der OLS muss, zusätzlich zu den LSA 1-3, die Bedingung erfüllt
+sein, dass \emph{keine Perfekte Multikollinearität} vorliegt.
+% subsect %%% multikollinearitat (end) %}}}
+
+\subsection{Interne \& Externe Validität}
+\label{sec:interne_&_externe_validitat}
+% subsect %%% interne_&_externe_validitat %{{{
+
+{\bfseries Externe Validität:} die statistische Inferenz kann hin zu anderen
+Populationen/Situationen verallgemeinert werden, wobei die “Situationen” sich
+auf etwa die rechtliche, politische, zeitliche oder physische Umgebung
+beziehen.\\\\
+{\bfseries Interne Validität:} die statistische Inferenz bezüglich kausaler Effekte ist für
+die betrachtete Population valide (“gute Statistik”).\\
+Fünf Gefahren für die interne Validität:\\
+\begin{enumerate}
+    \item Ausgelassene Variablen
+    	\item Fehlerhafte funktionale Form
+    	\item Messfehler in den Variablen
+    	\item Verzerrung durch selektive Stichproben
+    	\item Simultane Kausalität/Beeinflussung
+\end{enumerate}
+All diese führen dazu, dass $E(u_i|X_1, \ldots, X_{ki}) \neq 0$ - so dass OLS
+verzerrt und inkonsistent ist.\marginnote{[Folie 7-4]}
+
+% subsect %%% interne_&_externe_validitat (end) %}}}
+
+% subsect %%% kleinster_quadrate_schatzer (end) %}}}

@@ -1,0 +1,15 @@
+% sub: schaetzer_der_varianz_von_y {{{ %
+
+\begin{align*}
+s^2_y&=\frac{1}{n-1}\sum^{n}_{i=1} \left(y_i - \bar
+y\right)^2\\
+\marginnote{da $y$ binomailverteilt, gilt:\\$y_i^2 \mDef y_i \mDef \bar y$ (!)}
+&=\frac{1}{n-1}\sum^{n}_{i=1} \underbrace{ \left({y_i^2} - 2\bar{y}y_i +
+\bar{y^2} \right)}_{y_i = \bar y}\\
+&=\frac{1}{n-1}n \bar y -
+\textcolor{red}{2}n \bar y^2 + \textcolor{red}{n \bar y^2}\\
+&=\frac{n}{n-1}\left( \bar y - \bar y^2\right)\\
+&=\frac{n\bar y}{n-1}\cdot (1 -
+\bar y)\marginnote{entspr: $p\cdot(1-p)$}\\
+\end{align*}
+% subsection schatzer_der_varianz_von_y (end) %}}}

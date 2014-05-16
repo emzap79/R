@@ -1,4 +1,4 @@
-# vim:fdm=marker:isk=.
+# vim:fdm=marker:isk+=(,.,_
 
 # ####################################
 # ## Mitschrift ## Einführung in R ###
@@ -12,7 +12,7 @@
 library(MASS)       # Lädt die Dokumentation
 library(ggplot2)    # Zum speichern von Grafiken und Plots als PDF
 library(gplots)
-library(gdata)      # ?read.xls: Einlsesen von '.xls' Spreadsheets
+library(gdata)      # ?read.xls: Einlesen von '.xls' Spreadsheets
 library(graphics)
 library(plyr)
 
@@ -133,6 +133,25 @@ fac.traff.lights
 # # beispiel: nach grün folgt gelb folgt rot (-> chronologisch)
 
 # Vektoren als Faktor darstellen# }}}
+# Mehrdimensionale Variable# {{{
+
+x <- rep(1:3, c(4,3,1));x
+y <- c(1:2,4:9);y
+z <- c(1:2,1:3,2:4);z
+
+table(x,y)
+table(x,z)
+table(y,z)
+tab <- table(x,y,z)
+tab
+ftab <- ftable(x,y,z); ftab
+ftable (x,y,z, row.vars=c("z","y")
+as.data.frame(ftab)
+margin.table(tab, 1:2)   #Randverteilungen der Ausprägungen von x und y
+margin.table(tab, c(1,3))
+addmargins(margin.table(tab,1:2)
+
+# Mehrdimensionale Variable# }}}
 
 # Vektoren und Matrizen # }}}
 # Sortierung von Daten# {{{
@@ -174,18 +193,18 @@ wxyz.ox <- df.wxyz[ox,]; wxyz.ox
 
 # Hinzufügen von Zeilen und Spalten# {{{
 
+# Erzeugen eines Data.Frame
 Blutgruppe <- (c("A","B","0","AB")); df.wxyz
 df.bg <- cbind(df.wxyz, Blutgruppe); df.bg
 
 df.bg[,1] <- as.character(df.bg[,1]); df.bg[,1]
-df.bg[,4] <- as.numeric(df.bg[,4]); df.bg[,4]
-df.bg <- rbind(df.bg, c(as.character("Thomas"),22,188,as.numeric(FALSE),"B")); df.bg
-df.bkp <- df.bg
-# Fügt vorher festgelegten Vektor (= Blutgruppe) zu Matrix als Spalte hinzu.
-# Für das Anbinden von Zeilen gilt analog: 'rbind'
+df.bg[,4] <- as.logical(df.bg[,4]); df.bg[,4]
+df.bg <- rbind(df.bg, c(as.character("Thomas"),22,188,as.logical(0),"B")); df.bg
+# fügt vorher festgelegten vektor (= blutgruppe) zu matrix als spalte hinzu.
+# für das anbinden von zeilen gilt analog: 'rbind'
 
-# sortieren des data.frame nach dem Alter der untersuchungsobjekte
-df.bg <- df.bkp
+# Sortieren des data.frame nach dem Alter der untersuchungsobjekte
+df.bkp <- df.bg
 s.x <- order(df.bg[,2]); s.x
 df.bg[s.x,]
 
@@ -210,17 +229,17 @@ dat2;dat3
 # merge(dat2, dat3, by.x="pid", by.y="sector")
 dat.merge <- merge(dat2, dat3, all=T); dat.merge
 dat.merge <- merge(dat2, dat3, by.x="pid", by.y="sector")
-dat.merge     # beim zweiten beispiel werden die daten dort zusammengefügt, für
-              # welche "pid" und "sector" denselben wert annehmen. Die Option
-              # "all=T" lässt die gesamten Daten beider Tabelle miteinander vereinen.
+dat.merge
 
-# alt1: merge(dat2,dat3, by.x="pid", by.y="sector")
-# alt2: join(dat2,dat3, by.x="pid", by.y="sector") [dazu muss
-# zunächst das Paket 'plyr' geladen sein.]
+# # Vereint den ersten Dataframe mit dem Zweiten, indem übereinstimmungen der
+# # Variable 'pid' mit der Variable 'sector' gefunden werden. Die Option "all=T"
+# # lässt die gesamten Daten beider Tabelle miteinander vereinen.
 
-# Vereint den ersten Dataframe mit dem Zweiten, indem übereinstimmungen der Variable 'pid' mit der Variable 'sector' gefunden werden.
+# # alt1: merge(dat2,dat3, by.x="pid", by.y="sector")
+# # alt2: join(dat2,dat3, by.x="pid", by.y="sector") [dazu muss
+# # zunächst das Paket 'plyr' geladen sein.]
 
-# }}}
+# Zusammenfügen von Datenfiles nach identifizierenden Variablen# }}}
 
 # Zusammenführen von Daten # }}}
 # Datenimport / -export nach Excel # {{{
@@ -247,20 +266,24 @@ read.table('test.csv',header=T,sep=";",row.names=1) # http://stackoverflow.com/a
 # Eine Excel-Tabelle muss zunächst in das .csv format konvertiert
 # werden, in der kommandozeile per: ssconvert -S in.xlsx out.csv
 
-# Semikolon statt Komma
 # Vorher erzeugten Datensatz wieder einlesen
 read.csv2("test.csv", row.names=1,fill=T, )
+# # Die Endung "csv2" steht für die in Deutschland übliche Trennung mit
+# # Semikolon. Für die us-amerikan. Schreibweise reicht 'read.csv'.
 
-csv.ew <- read.csv("epex_wind.csv",fill=T,blank.lines.skip=T); csv.ew[12:20,0:6]
-# Die Endung "csv2" steht für die in Deutschland übliche Trennung mit
-# Semikolon. Für die amerikan. Schreibweise reicht 'read.csv'.
+
+# Datensatz einlesen: EPEX
+csv.ew <- read.csv("epex_wind.csv",sep=",",dec=",",fill=T,blank.lines.skip=T)
+csv.ew <- csv.ew[17:99,10:11]
+names(csv.ew) <- c("Date","Last Price");csv.ew
+nrow(csv.ew); ncol(csv.ew)
+csv.ew.bkp <- csv.ew
+
+# Format umwandeln
+csv.ew[,1] <- as.POSIXct( strptime(csv.ew[,1] , format="%Y/%m/%d" ) )
+csv.ew[,2] <- as.numeric(csv.ew[,2]); csv.ew[,2]
 
 # CSV einlesen# }}}
-# Werte auslesen# {{{
-
-nrow(csv.ew); ncol(csv.ew)
-
-# Werte auslesen# }}}
 
 # Datenimport / -export nach Excel # }}}
 
@@ -271,9 +294,11 @@ nrow(csv.ew); ncol(csv.ew)
 
 set.seed(123)
 x <- rchisq(1000,5); x
-# Vektor mit 1000 (zufälligen) Einträgen
+
+# # Vektor mit 1000 (zufälligen) Einträgen
 par(las=1, mfrow=c(3,1), cex = .7, mar = c(5, 4, 4, 2) + 0.1)
-# Drei Grafiken pro Seite (von oben nach unten)
+# Globale Einstellungen für Grafiken. Hier: Drei Grafiken pro Seite (von
+# oben nach unten)
 
 # Randomisierten Datensatz vorbereiten# }}}
 # Histogramme# {{{
@@ -294,7 +319,8 @@ truehist(x, h = 0.25, main = "Truehist2")
 truehist (x, main = "Truehist3", breaks = c(-1,2, seq(3,7,0.5),8,20), prob=TRUE)
 # Mit dem Argument 'prob=TRUE' wird gewährleistet, dass die Histogrammfläche den Wert 1 annimmt und an der y-Achse die Dichte abgetragen wird. Diese wächst proportional zur Fläche einer Klasse.
 
-# }}}
+
+# Histogramme# }}}
 # Optimale Klassenwahl (S. 26):# {{{
 
 nclass.Sturges(x)
@@ -306,7 +332,7 @@ nclass.scott(x); hist.scott(x, main="Scott")
 nclass.FD(x); hist.FD(x, main="Freedman-Diaconis (FD)")
 # Klassenbreite zurückgehend auf Spannweite und Quartilsabstand. Zahl der breaks, entspricht Zahl der Klassen +1.
 
-# }}}
+# Optimale Klassenwahl (S. 26):# }}}
 # Erstellen des Barplots (S. 27 ff.)# {{{
 
 # Barplot 1# {{{
@@ -317,8 +343,15 @@ x <- sample(1:4, size = 1000, replace = T, prob = rev(seq(0.1,0.8,0.2)))
 
 HV.x <- table(x); HV.x
 # Auszählung der Häufigkeiten der vier versch. Ausprägungen.
-barplot(HV.x, main = "Ein einfacher Barplot", sub ="Multinomialverteilung", col = c("black","grey30","grey70","white"), xlab ="Ausprägungen", ylab = "Häufigkeit", width = c(1,2,3,4), space = 1)
-legend(15,350, c("eins", "zwei", "drei", "vier"), cex = 0.9, fill = c("black","grey30","grey70","white"), ncol = 2)
+barplot(HV.x,
+        main = "Ein einfacher Barplot",
+        sub ="Multinomialverteilung",
+        col = c("black","grey30","grey70","white"),
+        xlab ="Ausprägungen",
+        ylab = "Häufigkeit",
+        width = c(1,2,3,4),
+        space = 1)
+legend(15.5,440, c("eins", "zwei", "drei", "vier"), cex = 1.5, fill = c("black","grey30","grey70","white"), ncol = 2)
 # Barplot mit weiteren Einstellungen zu Farbe, Überschrift, Achsenbeschriftung etc.
 
 
@@ -330,7 +363,7 @@ HV.xy <- table(x,y); HV.xy
 # Häufigkeitsverteilung der zweiten Variable mit 1000 Realisationen einer Binomialverteilten Stichprobe.
 
 barplot(HV.xy, col = c(2,4,6,8), main = "Ein anderer Barplot", sub ="Binomialverteilung", xlab ="Ausprägungen", ylab = "Häufigkeit", names.arg = c("Nullen","Einsen"))
-legend(0.5,600, c("eins", "zwei", "drei", "vier"), cex = 0.9, fill = c(2,4,6,8), ncol = 2)
+legend(0.2,700, c("eins", "zwei", "drei", "vier"), cex = 1.5, fill = c(2,4,6,8), ncol = 2)
 # Barplot der Binomialverteilung mit Legende.
 
 
@@ -338,10 +371,8 @@ legend(0.5,600, c("eins", "zwei", "drei", "vier"), cex = 0.9, fill = c(2,4,6,8),
 # Barplot 3 # Alle Farben# {{{
 
 z <- sample(1:8, size = 1000, replace = T, prob = seq(0.1,0.8,0.1))
-HV.xz <- table(z)
-barplot(HV.xz, col = 1:8, main = "Barplot der Farben", sub = "Multinomialverteilung", xlab = "Ausprägungen", ylab = "Häufigkeit", names.arg = LETTERS[1:8])
-legend(0, 200, 1:8, fill = seq(1,8,1), cex = 0.8, ncol = 4)
-
+HV.xz <- table(z); HV.xz
+barplot(HV.xz, col = 1:8, main = "Barplot der Farben", sub = "Multinomialverteilung", xlab = "Ausprägungen", ylab = "Häufigkeit", names.arg = 1:8)
 
 # Barplot 3 # Alle Farben# }}}
 
@@ -351,150 +382,160 @@ legend(0, 200, 1:8, fill = seq(1,8,1), cex = 0.8, ncol = 4)
 # Streudiagramm
 par(las=1,mfrow=c(2,1))
 x <- runif(n = 100, min = 0, max = 100)
-# Somit generieren wir eine mit Zufallszahlen überlagerte lineare Beziehung. Als x-Variable verwenden wir 100 Realisationen einer im Bereich 0 bis 100 gleichverteilten Zufallsvariablen.
+# # Somit generieren wir eine mit Zufallszahlen überlagerte lineare Beziehung.
+# # Als x-Variable verwenden wir 100 Realisationen einer im Bereich 0 bis 100
+# # gleichverteilten Zufallsvariablen.
 
-y <- 20+x+rnorm(n = 100, mean = 0, sd = 20)
-# Die Y-Variable ist eine Zufallsvariable, deren auf X bed. Erwartungswert eine lineare Funktion der X-Werte ist. Die Realisationen einer normalverteilten Zufallsvariablen (= N(0,20)) werden zu den linearen Funktionswerten addiert.
+y <- 20+x+rnorm(n = 100, mean = 0, sd = 20);y
+# # Die Y-Variable ist eine Zufallsvariable, deren auf X bed. Erwartungswert eine
+# # lineare Funktion der X-Werte ist. Die Realisationen einer normalverteilten
+# # Zufallsvariablen (= N(0,20)) werden zu den linearen Funktionswerten addiert.
 
 plot(x, main = "X-Variable", sub = "Gleichverteilt von 0 bis 100")
 plot(y, main = "Y-Variable", sub = "Überlagerte Normalverteilung")
 plot(x,y, main = "XY-Variablen", sub = "Auf X bedingte Y-Variable", pch = 4, xlim = c(-10,120), ylim = c(-20,200), type = "p")
 # type p (= Punktdiagramm) oder type l.
 
-# }}}
+
+# Erstellen eines Punktediagramms (S. 31 ff.)# }}}
 # Regressionslinien# {{{
 
 abline(lm(y ~ x), lwd = 2, col = "red")
 lines(x, lm(y ~ x)$fitted.values, lwd = 3, col = 3)
-# Oben: Eine rote OLS-Regressionslinie (= Methode der kleinsten Quadrate). Unten: OLS-Regression für Wertebereich.
+# # Oben: Eine rote OLS-Regressionslinie (= Methode der kleinsten Quadrate).
+# # Unten: OLS-Regression für Wertebereich.
 
 # Beispielplot für Aktienverlauf
 set.seed(1)
 y <- cumsum(rnorm(20))
 x <- seq(1,length(y),b = 1)
 plot(x,y, xlim = c(0,20), ylim = c(-2,4), type = "l", col="red", lwd=2, lty=1, ylab="Aktienkurs")
-legend(0,4,"xy-Aktie", lty=1, col=2, ncol = 4, lwd=2, bty="n")    #Betrachten der zeitl. Entwick. mittels eines Liniendiagramms
 
-# }}}
+# Betrachten der zeitl. Entwick. mittels eines Liniendiagramms
+legend(0,4,"xy-Aktie", lty=1, col=2, ncol = 4, lwd=2, bty="n")
+
+
+# Regressionslinien# }}}
 # Boxplots (S.36)# {{{
 
 # Generieren des Boxplots
+# # Die mittlere horizontale Linie in der grauen Box stellt den Median dar. Die
+# # graue Box wird oben durch den 2. Quartilswert und unten durch den 1.
+# # Quartilswert begrenzt. Die gesamte Box gibt somit den totalen Quartilsabstand
+# # (= Interquartilerange) an. Oben und unten ragen aus der Box gestrichtelte
+# # Linien mit kleinem Querbalken heraus. Diese werden "Whisker"
+# # (Schnurrbarthaar) genannt. Die Länge der Whisker ergibt sich aus dem minimum
+# # der 1.5-fachen Länge der Box und dem Abstand der entferntesten Beobachtung.
+# # Liegen einzelne Beobachtungen außerhalb der Whisker, werden diese einzeln in
+# # die Graphik als Punkte eingezeichnet.
+
+# Randomisierte Zahlen
+dev.off()
 set.seed(1)
 n <- 21; kC <- cumsum(rnorm(n, mean = .5, sd =1.5))+100; rC <- diff(log(kC))
 plot(rC, main = "Aktienkurs", ylab = "Rendite", xlab = "Zeitstrahl", type = "l")
 boxplot(rC, boxwex = 0.75,
-col = "yellow",
-main = "Boxplot für Aktienkurs",
-xlab = "Aktienkurs",
-ylab = "Rendite", yaxs = "r")
-# Die mittlere horizontale Linie in der grauen Box stellt den Median dar. Die graue Box wird oben durch den 2. Quartilswert und unten durch den 1. Quartilswert begrenzt. Die gesamte Box gibt somit den totalen Quartilsabstand (= Interquartilerange) an. Oben und unten ragen aus der Box gestrichtelte Linien mit kleinem Querbalken heraus. Diese werden "Whisker" (Schnurrbarthaar) genannt. Die Länge der Whisker ergibt sich aus dem minimum der 1.5-fachen Länge der Box und dem Abstand der entferntesten Beobachtung. Liegen einzelne Beobachtungen außerhalb der Whisker, werden diese einzeln in die Graphik as Punkte eingezeichnet.
+        col = "yellow",
+        main = "Boxplot für Aktienkurs",
+        xlab = "Aktienkurs",
+        ylab = "Rendite", yaxs = "r")
 
-# }}}
-# Statistische Kennzahlen# {{{
 
+# Bestimmung Statistischer Kennzahlen
 stat.rC <- round(c(min(rC),
-max(min(rC),quantile(rC,0.25)-1.5*IQR(rC)),
-quantile(rC,0.25),
-median(rC),
-quantile(rC,0.75),
-min(max(rC),quantile(rC,0.75)+1.5*IQR(rC)),
-max(rC)),4)
+                   max(min(rC),quantile(rC,0.25)-1.5*IQR(rC)),
+                   quantile(rC,0.25),
+                   median(rC),
+                   quantile(rC,0.75),
+                   min(max(rC),quantile(rC,0.75)+1.5*IQR(rC)),
+                   max(rC)),4)
 
-names(stat.rC) <- c("min","whisk.dow","quant.25","median","quant.75","whisk.up","max");
+# Beschriftung und Ausgabe gerundeter Kennzahlen
+names(stat.rC) <- c("min","whisk.dow","quant.25","median","quant.75","whisk.up","max"); stat.rC
+# # alt: boxplot.stats(rC)$stats
+# # Die Quantile werden hier anders berechnet als oben.
 
-# Die für die Graphik relevanten Punkte lassen sich mit folgenden Befehlen ermitteln:
-stat.rC   #Alternative 1
-boxplot.stats(rC)$stats
-# Alternative 2: Die Quantile werden hier anders berechnet als oben.
 
-# }}}
+# Boxplots (S.36)# }}}
 # QQ-Plots (S. 39)# {{{
 
 # QQ-Plots dienen dem visuellen Vergleich zweier Verteilungen. Üblicherweise vergleicht man die empirische Verteilung der vorliegenden Daten mit einer theoretischen Verteilung.
 
-# }}}
+# QQ-Plots (S. 39)# }}}
 # Kopieren als PDF# {{{
 
-dev.copy(device = pdf, file = "foobar.pdf", width = 4, height = 3, pointsize = 12, onefile = FALSE, paper = "special"); dev.off()
 # Hiermit lassen sich die Grafiken (unter Windows) als PDF-Dateien abspeichern.
+dev.copy(device = pdf, file = "foobar.pdf", width = 4, height = 3, pointsize = 12, onefile = FALSE, paper = "special"); dev.off()
 
-dev.copy2pdf(device = "pdf", file="/path/to/foobar.pdf", out.type="pdf"); dev.off()
 # Kopieren als PDF unter Linux.
+dev.copy2pdf(device = "pdf", file="/tmp/foobar.pdf", out.type="pdf"); dev.off()
 
-# }}}
+# Kopieren als PDF# }}}
 
 # 2. Graphiken# }}}
 # 3. Häufigkeitsverteilungen # {{{
 
 # Häufigkeitsverteilung (S. 44) # {{{
 
-n <- rnorm(1000); x <- rnorm(n, 200, 4)
-hist(x, main="Histogramm der Normalverteilung", col=3, prob=1)
+n <- rnorm(10000);x <- rnorm(n, 20, 0.5)
+hist(x,
+     xlim = c(18,22),
+     ylim = c(0,1),
+     xlab = "Beobachtungen x_i",
+     main="Histogramm der Normalverteilung",
+     col=3,
+     prob=1)
+
+# Dichte- & Verteilungsfunktion
+# Die Verteilungsfunktion ist die erste Ableitung der Dichtefunktion
 lines(sort(x),dnorm(sort(x),mean(x),sd(x)))
 lines(sort(x),pnorm(sort(x),mean(x),sd(x)),col=2, lwd=2)
-# alt1: lines(sort(x),pnorm(sort(x),mean(x),sd(x)),col=2, lwd=2)
-# alt2: plot.ecdf(x)
-# Ableitung der Normalverteilung
+# # alt: lines(sort(x),pnorm(sort(x),mean(x),sd(x)),col=2, lwd=2)
 
-# }}}
+# 'dnorm' gives the density, 'pnorm' gives the distribution function,
+# 'qnorm' gives the quantile function, and 'rnorm' generates random
+# deviates.
+
+# Häufigkeitsverteilung (S. 44) # }}}
 # Verteilungsfunktion (S. 45)# {{{
 
 # Quantilsfunktion (S. 47)
 median(x)
 quantile(x,prob=0.5)
-# alt1: quantile(x,prob=0.5)
-# alt2: quantile(x, 2/4)
-# alt3: quantile(x, prob=seq(0,1,.5))      #etc.
-# entspricht: sum(x)/length(x)
+# # alt: quantile(x, prob=seq(0,1,.5))      #etc.
+# # entspricht: sum(x)/length(x)
 
-qda <- quantile(a, probs=seq(0, 1, 0.1))      #Die drei Argumente des seq-Befehls sind der Reihe nach der Anfangs- und der Endwert (hier die Wahrscheinlichkeiten 0 bzw. 1), sowie das Intervall (hier ein zehntel für Dezile, man kann auch (1/10) schreiben).
+qda <- quantile(x, probs=seq(0, 1, 0.1)); qda
+# # Die drei Argumente des seq-Befehls sind der Reihe nach der Anfangs- und der
+# # Endwert (hier die Wahrscheinlichkeiten 0 bzw. 1), sowie das Intervall (hier
+# # ein zehntel für Dezile, man kann auch (1/10) schreiben).
 
-# }}}
+
+# Verteilungsfunktion (S. 45)# }}}
 # Lagemaße # {{{
-
-# Geometrisches Mittel# {{{
-
-W <- c(20,30,40)
-w <- W/100    #Wachstumsrate als Dezimalzahl: x1/x0-1
-w <- W/W/100; w
-
-# }}}
-# Varianz# {{{
-
-var(x)
-
-# }}}
-# Kovarianzen# {{{
 
 x <- 1:10
 set.seed(123)
 y <- sample(1:10, 10, prob=seq(1,20,2))
 
-# }}}
-# cov()# {{{
+# Varianz
+var(x)
 
+# Kovarianzen - cov()
 cov(x,y)
 
-# }}}
-# Standardabweichung (S. 52)# {{{
-
-(sum((x-mean(x))^2/(n-1))^0.5
+# Standardabweichung (S. 52)
 sd(x)
+# # alt: (sum((x-mean(x))^2/(n-1))^0.5
 
-# }}}
-# Quartilsabstand# {{{
-
+# Quartilsabstand
 IQR(x)
 
-# }}}
 
-# }}}
+# Lagemaße # }}}
 # Schiefemaße (S. 53ff) # {{{
 
-# mean((x-mean(x))^3)/sd(x)^3
-
-# Erstellen der Funktion# {{{
-
+# Erstellen der Funktion
 skew.d <- function (x) {
 n <- length (x)
 std <- (sum((x - mean(x))^2)/n)^0.5
@@ -503,57 +544,33 @@ skew.d <- z3/std^3
 return(skew.d)
 }
 
-# }}}
-# Schiefe der Verteilung # {{{
 
+# Schiefe der Verteilung:
+# mean((x-mean(x))^3)/sd(x)^3
 skew <- function(x) {
-n <- length(x)
-skew.d <- skew.d(x)
-skew <- skew.d*n^0.5*(n-1)^0.5/(n-2)
-return(skew)
+    n <- length(x)
+    skew.d <- skew.d(x)
+    skew <- skew.d*n^0.5*(n-1)^0.5/(n-2)
+    return(skew)
 }
 
-# }}}
 
-# }}}
+# Schiefemaße (S. 53ff) # }}}
 # Wölbungsmaße (S. 55 f.) # {{{
 
-# Wölbung# {{{
-
+# Wölbung
 set.seed(123)
 x <- round(rlnorm(1000)*1000)
 mean(((x-mean(x))/sd(x))^3)  #Die Verteilung ist steil.
 
-# }}}
-# Kurtosis # {{{
 
+# Kurtosis
 mean(((x-mean(x))/(sd(x)))^4)-3; hist(x, nclass="scott")     #Die Verteilung ist stark rechtsschief.
 std <- (sum((x-mean(x))^2)/n)^0.5
 z4 <- 1/n * sum((x-mean(x))^4)
 kurtosis.d <- z4/std^4 -3; kurtosis.d
 
-# }}}
-# Mehrdimensionale Variable# {{{
-
-x <- rep(1:3, c(4,3,1));x
-y <- 1:2,4);y
-z <- c(1:2,1:3,2:4):z
-
-table(x,y)
-table(x,z)
-table(y,z)
-tab <- table(x,y,z)
-tab
-ftab <- ftable(x,y,z); ftab
-ftable (x,y,z, row.vars=c("z","y")
-as.data.frame(ftab)
-margin.table(tab, 1:2)   #Randverteilungen der Ausprägungen von x und y
-margin.table(tab, c(1,3))
-addmargins(margin.table(tab,1:2)
-
-# }}}
-
-# }}}
+# Wölbungsmaße (S. 55 f.) # }}}
 
 # 3. Häufigkeitsverteilungen # }}}
 # 4. While & For-Schleifen # {{{
@@ -573,13 +590,13 @@ erg[i] <- mean(wi)
 }
 max(erg)
 
-# }}}
+# Schleife # }}}
 # Funktionen # {{{
 
 myf <- function(a) mean( abs(a - median(a)) )
 max(tapply(tab1$wagerate,tab1$sector,myf))
 
-# }}}
+# Funktionen # }}}
 
 # 4. While & For-Schleifen # }}}
 # 5. Wahrscheinlichkeiten # {{{
@@ -733,7 +750,7 @@ legend(-3, .9, ex.cs1, lty=1:2, col=2:3, adj = c(0, .6))     #Zu finden im Anhan
 
 # }}}
 
-# 7. Funktionen und Rechenoperationen
+# 7. Funktionen und Rechenoperationen # }}}
 
 #######
 ### EOF

@@ -1,0 +1,36 @@
+% sssec %%% unbiasedness_beta_0 %{{{
+Unter der Annahme des Regressionsmodells $y_i = \beta_ 0 + \beta_ 1 x_i +
+u_i,\, i = 1, \ldots, n$ soll für den OLS-Schätzer $\hat\beta_0$ gelten:
+$E(\hat\beta_0)=\beta_0$. Es sei $\hat\beta_1$ ein unverzerrter Schätzer für $\beta_1$.\\\\
+Beachte:
+\marginnote{somit
+\begin{align*}
+	\bar y &= \frac{1}{n}\sum^{n}_{i=1} (\beta_0 + \beta_1 x_i + u_i)\\
+		&=\beta_0 + \beta_1 \bar x + \frac{1}{n}\sum^{n}_{i=1} u_i\\
+\end{align*}
+}
+
+\begin{align*}
+	y_i&=\beta_0 + \beta_1 x_i + u_i
+\end{align*}\\
+
+Beweis:
+\begin{align*}
+	E(\hat\beta_0)&=E(\bar y - \hat\beta_1\bar x)\\
+	&=E(\underbrace{\beta_0 + \beta_1 \bar x +
+\frac{1}{n}\sum^{n}_{i=1} u_i}_{\bar y} - \hat\beta_1 \bar x)\\
+\marginnote{
+	\begin{itemize}
+\item 	$\bar x E(\beta_1 - \hat\beta_1) = 0$, da $\hat \beta_1$ unverzerrt,
+\item $E[E(u_i|X=x_i)]=0$, nach LSA 1,\\
+\item Da $\beta_0$ eine Konstante, ist $E\beta_0 = \beta_0$.
+	\end{itemize}
+}\\
+%%%
+&=E(\beta_0) + \underbrace{\comment{E[(\beta_1 - \hat\beta_1)\bar x]}}_{\bar x
+E(\beta_1 - \hat\beta_1)} + \underbrace{\comment{\frac{1}{n}\sum^{n}_{i=1}
+E(u_i)}}_{E[E(u_i|x_i)]}\\
+%%%
+E(\hat\beta_0)&=\beta_0
+\end{align*}
+% sssec %%% unbiasedness_beta_0 (end) %}}}

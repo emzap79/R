@@ -1,0 +1,343 @@
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % Documentclass%{{{
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[
+	14pt,							% fontsize
+	a4paper,						% paper-size
+	landscape,						% paper-format: portrait & landscape
+	titlepage,
+	oneside,						% onesided layout for print; alternatively: twoside
+	openany,						% openany: chapters start at the next empty page;
+									% openright: chapters start at the next empty RIGHT page
+	onecolumn,						% argument 'twocolumn' divides pages
+	%flushbottom,					% flushbottom: makes all text pages the same height;
+									% raggedbottom: height varies from page to page
+	fleqn,							% equations are left-justified instead of being centered
+	% leqno,							% equation numbers are on the left side
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % KOMA
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-- scrartcl/-book/-reprt: settings ---------------------------------------%{{{
+	 headings=normal,				% fontsize for headings: small, normal, big
+	 headsepline=true,				% true: horizontal line below the header
+	 footsepline=false,				% true: horizontal line above the pagenumber
+	 headinclude=false,				% true: add space between the top and the header
+	 footinclude=false,				% true: add space between the bottom and the footnotes
+	 twocolumn=false,				% true: split page in two columns
+	 cleardoublepage=plain,			% like cleardoublepage, if a blank page is inserted it uses the style plain
+	 bibliography=totoc,
+	 listof=totoc,
+	 toc=index,						% put stuff to toc
+	 parskip=off,					% paragraph formatting. default: off; full+/%/-; half+/%/-
+	 pagesize=pdftex				% paperhight is set via \pdfpagewidth and \pdfpageheight
+%--------------------------------------------------------------------------%}}}
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % Letters
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% dinbrief (german)
+% akletter
+% formlett
+%%-- scrlttr2: settings ----------------------------------------------------%{{{
+%	 %% Satzspiegel
+%	 enlargefirstpage=on,			% Erste Seite anders
+%	 pagenumber=headright,			% Seitenzahl oben mittig
+%	 %
+%	 %% Layout
+%	 headsepline=on,				% Linie unter der Seitenzahl
+%	 parskip=half,					% Abstand zwischen Absaetzen
+%	 %
+%	 %% Briefkopf und Anschrift
+%	 fromalign=right,				% Plazierung des Briefkopfs
+%	 fromphone=on,					% Telefonnummer im Absender
+%	 fromrule=off,					% Linie im Absender (aftername, afteraddress)
+%	 fromfax=off,					% Faxnummer
+%	 fromemail=on,					% Emailadresse
+%	 fromurl=off,					% Homepage
+%	 fromlogo=off,					% Firmenlogo
+%	 addrfield=on,					% Adressfeld fuer Fensterkuverts
+%	 backaddress=off,				% ...und Absender im Fenster
+%	 subject=beforeopening,			% Plazierung der Betreffzeile
+%	 locfield=narrow,				% zusaetzliches Feld fuer Absender
+%	 foldmarks=on,					% Faltmarken setzen
+%	 numericaldate=off,				% Datum numerisch ausgeben
+%	 refline=narrow,				% Geschaeftszeile im Satzspiegel
+%	 %
+%	 %% Formatierung
+%	 draft=on				% Entwurfsmodus, als Formatierungshilfe -> on=ein, off=aus
+%%--------------------------------------------------------------------------%}}}
+%%-- newlfm: settings ------------------------------------------------------%{{{
+	%sigleft,stdletter,orderfromtodate
+							%% sigleft: signature to the left
+							%% letter styles: stdletter, stdletternofrom, busletter, busletternofrom
+							%% orderfromtodate: and date reordered to appear after the to-address
+%%--------------------------------------------------------------------------%}}}
+]{scrartcl}
+
+\renewcommand{\arraystretch}{3.0}                      %% change space btw rows (default: 1.0)
+% \setlength{\tabcolsep}{5pt}                            %% space btw columns (default value: 5pt)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% commands for \maketitle
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pagestyle %{{{
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{myheadings}
+
+%	plain: 			The page number is in the foot and the head is empty. It is the default
+%					page style for the 'article' and 'report' document.
+%	empty: 			The head and foot are both empty. LaTeX still assigns each page a number,
+%					but the number is not printed.
+%	headings: 		The page number and other information, determined by the document
+%					style, is put in the head; the foot is empty.
+%	myheadings: 	Similar to the 'headings' page style, except you specify the "other
+%					information" that goes in the head, using the \markboth and \markright commands
+%					described below.
+%}}}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Common-Packages %{{{
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[ngerman]{babel}			% Neue Rechtschreibung
+\usepackage[utf8]{inputenc}			% UTF-8
+\usepackage[T1]{fontenc}			% Zur Darstellung von Umlauten
+%
+% %%%%%%%%%
+% % some useful packages
+% %%%%%%%%%
+\usepackage[percent]{overpic}		% overlaying pic above another
+\usepackage[printonlyused]{acronym} % printonlyused: only used acronyms are printed; other options: withpage
+\usepackage{blindtext, xfrac}		% dummytext with '\blindtext'
+\usepackage{charter}				% use the charter font for the document text
+\usepackage{color}					% coloring eg. \textcolor{red}{... text}
+\usepackage{enumitem}				% if you want to customize lists
+\usepackage{eurosym}				% eurosymbol-package
+\usepackage{graphicx}				% to include graphics
+\usepackage{longtable}				% for long tables
+\usepackage{pdfpages}				% inserting pdffiles
+\usepackage{rotating}				% rotating tabulars
+\usepackage{tabu}					% tabu-package
+\usepackage{tabto}					% tabstops ('\tab') in list-environment
+\usepackage{textcomp}				% additional characters
+\usepackage{times}					% times new roman
+\usepackage{url}					% for url
+\usepackage{wrapfig}				% to get nice wrap of figures
+\usepackage{xifthen}				% needed for citation-commands (see below!)
+% \usepackage[left=0.5cm,top=0.5cm,bottom=1.0cm,includeheadfoot]{geometry}
+%
+% \usepackage[top=Bcm, bottom=Hcm, outer=Ccm, inner=Acm, heightrounded,
+% marginparwidth=Ecm, marginparsep=Dcm]{geometry}
+\usepackage[top=2cm,bottom=3cm, outer=15cm, inner=0.5cm, heightrounded,
+marginparwidth=10cm, marginparsep=3.5cm]{geometry}
+\usepackage[automark]{scrpage2}	% Should be set AFTER setting page geometry
+									% automark, headsepline,
+									% plainheadsepline, nouppercase
+\usepackage{hyperref}
+\hypersetup{pdftex,colorlinks=true,allcolors=blue}
+\usepackage{hypcap}                                    % links should always anchor at the image not the caption.
+
+% %%%%%%%%%
+% % Math-Packages
+% %%%%%%%%%
+\usepackage{marginnote}
+\usepackage{latexsym,amsfonts}
+\usepackage{epsfig}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathptmx}				% schrift times
+\usepackage{array}					% texdoc array
+\usepackage{bbm}
+\usepackage{mathtools}				% http://ctan.org/pkg/mathtools
+									% for 'case'-environment
+%
+% %%%%%%%%%
+% Bibliography-Packages
+% %%%%%%%%%
+%\usepackage[numbers]{natbib}	% an extension to allow
+							%% author-year citations along wih
+							%% numerical citations. For more
+							%% informations, texdoc Natbib
+							%% options: numbers,super,sort&compress
+							%% other packages: harvard, chicago etc.
+%\usepackage{makeidx}		%% Single index (\makeindex); change makefile, if this is used
+\usepackage{multind}		%% Make multiple indexes with multind; makefile
+							%% sort both indexes eg. \makeindex{A}, \makeindex{B}
+\usepackage[toc]{glossaries}		%% Making a nice glossary. Options: nonumberlist, toc
+%
+% %%%%%%%%%
+% % Sidecaptions [optional]
+% %%%%%%%%%
+%\usepackage[demo]{graphicx}
+%\usepackage{sidecap}
+%\usepackage[outercaption]{sidecap}
+%\usepackage[capbesideposition={top,outside},facing=yes,capbesidesep=quad]{floatrow}
+%}}}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Silbentrennung und Rechtschreibung %{{{
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tolerance=601						% Toleranzwert für die Silbentrennung
+									% und den Abstand zw. Wörtern
+\hyphenation{ }						% Ausnahmen für die automatische
+									% Silbentrennung (jeweils durch
+									% Leerzeichen getrennt eintragen)
+%}}}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Headers, Indendation & Pagenumbering %{{{
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%
+% % Headings
+%%%%%%%%%
+%\automark[section]{section}		% current section names at headline of every page
+%\lehead{\author}				% overwriting even pages with the author's name
+%
+%%%%%%%%%
+% % Indendation
+%%%%%%%%%
+%\setlength\parindent{0pt}		% globally suppress indentation
+%\setcounter{secnumdepth}{0}	% unnumbers all headings (\parts, \subsections etc.), even when supposed to be numbered
+%
+%%%%%%%%%
+% % Switch Pagenumbering on/off
+%%%%%%%%%
+\pagenumbering{arabic}			% set 'gobble' to switch off numbering. Other
+								% options are: [Aa]lph, [Rr]oman, arabic
+%}}}
+%
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fonts %{{{
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % Mit PDF-LaTeX
+% % see: http://stackoverflow.com/a/877670
+%\renewcommand{\familydefault}{\sfdefault} % This changes the default font family to sans-serif.
+%
+%If you want other fonts, try the following
+%\setmainfont{Charis SIL}
+%\setmainfont{URW Palladio L}
+%\setmainfont{Linux Libertine O}
+%\setmainfont{Gentium Book Basic}
+%}}}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Commands %{{{
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%%%%%%%%%
+% % Comments and indentation
+%%%%%%%%%
+\newcommand{\comment}[1]{\textcolor{red}{#1}}
+% \renewcommand{\comment}[1]{}						% Comments: If both commands are used, the existing comments will be deleted
+\newcommand{\ind}{\hspace{0.2in}}
+\newcommand{\ftext}[1]{\text{\ind\footnotesize #1}}
+\newcommand{\note}[1]{\marginnote{\em #1}}
+%
+%%%%%%%%%
+% % Commands for Citation
+%%%%%%%%%
+%\AtBeginDocument{\renewcommand{\harvardand}{\&}}	% replaces and for & in harvard citation styles
+%\AtBeginDocument{\renewcommand{\and}{\&}}			% replaces and for & in harvard citation styles
+%
+%%%%%%%%%
+% % Commands for Letters etc
+%%%%%%%%%
+\newcommand{\myfirstname}{Jonas}
+\newcommand{\mylastname}{Petong}
+\newcommand{\mystreet}{Lohbergstr. 6}
+\newcommand{\mypostcode}{44789}
+\newcommand{\mycity}{Bochum}
+\newcommand{\myphone}{0176 53347208}
+\newcommand{\mymail}{jonas.petong@we.de}
+%
+%%%%%%%%%
+% % Mathcommands
+%%%%%%%%%
+\newcommand{\sF}{\mathcal{F}}
+\newcommand{\sH}{\mathcal{H}}
+\newcommand{\sB}{\mathcal{B}}
+\newcommand{\sD}{\mathcal{D}}
+\newcommand{\sN}{\mathcal{N}}
+\newcommand{\sO}{\mathcal{O}}
+\newcommand{\mR}{\mathbb{R}}		% blackboard bold R
+\newcommand{\mN}{\mathbb{N}}		% blackboard bold N
+\newcommand{\mNO}{\mathbb{N}_0}
+\newcommand{\mP}{\rm I\hspace{-0.7mm}P}
+\newcommand{\mD}{\mathbb{D}}
+\newcommand{\mDef}{
+\overset{\text{\tiny def}}{=}}		% mathematical notion of “is defined as”.
+\newcommand{\mF}{\mathbb{F}}
+\newcommand{\mZ}{\mathbb{Z}}
+\newcommand{\mQ}{\mathbb{Q}}
+\newcommand{\bD}{\mathbf{D}}
+\newcommand{\mE}{I\!\!E}
+\newcommand{\si}{{(i)}}
+\newcommand{\coloneqq}{\mathrel{\mathop:}=}
+\newcommand{\eqqcolon}{=\mathrel{\mathop:}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\ip}[2]{\left< #1 , #2 \right>}
+\newcommand{\Dom}{\text{Dom }}
+\newcommand{\indicator}{\mathbf{1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+% \newcommand{\cn}[1]{\citeasnoun{#1}}
+%
+%%%%%%%%%
+% % Citations
+%%%%%%%%%
+% Requires \usepackage{xifthen} - Whatever-you-want-command:
+% \newcommand{\cmdAlias}[2]{\defcitealias{#1}{#2}\kern-0.8ex\citetalias{#1}} %\kern-0.8ex removes a space
+%
+%% Alias mit zusätzlichem Argument (Seiten-, bzw. Kapitelangaben) --- xifthen-version plain
+\newcommand{\cmdCite}[2][]{\citeauthor{#2}, \citeyear{#2}\ifthenelse{\isempty{#1}}{}{; #1}}
+% cf. version with with braces
+\newcommand{\cmdCiteBraces}[2][]{(\citeauthor{#2}, \citeyear{#2}\ifthenelse{\isempty{#1}}{}{; #1})}
+\newcommand{\cmdCiteVgl}[2][]{(vgl. \citeauthor{#2}, \citeyear{#2}\ifthenelse{\isempty{#1}}{}{; #1})}
+\newcommand{\cmdCiteAuth}[2][]{\citeauthor{#2}\ifthenelse{\isempty{#1}}{}{; #1}}
+\newcommand{\cmdCiteYear}[2][]{\citeyear{#2}\ifthenelse{\isempty{#1}}{}{; #1}}
+\newcommand{\cmdCiteTxt}[2][]{\citeauthor{#2} (\citeyear{#2}\ifthenelse{\isempty{#1}}{}{; #1})}
+%}}}
+\renewcommand{\arraystretch}{1.2}
+%}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % Title%{{{
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\markright{Jonas Petong}
+% commands for \maketitle
+\title{Zusammenfassung}
+\subtitle{WS 2013/14: Öko I}
+\author{Jonas Petong}
+\date{\today}
+
+% press <CTRL+j>%}}}
+\begin{document}
+\maketitle
+% \pagebreak
+
+\section{Formeln}
+\label{sec:formeln}
+\input{sections/01_formeln}
+
+\pagebreak
+\section{Beweise \& Funktionen}
+\label{sec:derivations}
+\input{sections/02_beweise}
+
+\pagebreak
+\section{Verschiebungssätze}
+\label{sec:verschiebungssatze}
+\input{sections/03_verschs}
+
+\pagebreak
+\section{Herleitungen}
+\label{sec:verschiebungssatze}
+\input{sections/04_herleit}
+
+\pagebreak
+\section{Ordinary Least Squares (OLS)}
+\label{sec:ordinary_least_squares_ols}
+\input{sections/05_ols}
+
+\end{document}

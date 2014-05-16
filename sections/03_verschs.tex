@@ -1,0 +1,23 @@
+\subsection{Varianz}
+\label{sub:varianz}
+
+\begin{align*}
+	Var(X)&= E\bigl((X-E(X))^2\bigr)\\&
+	= E\bigl(X^2 - 2XE(X) + E(X)^2\bigr)\\  &
+	= E(X^2) - E\bigl(2XE(X)\bigr) + E\bigl(E(X)^2\bigr)\\&
+	= E(X^2) - \underbrace{2E(X)E(X)}_{2E(X)^2} + E(X)^2\\&
+	= E(X^2) - E(X)^2
+\end{align*}\label{eq:versch_satz_1}
+% subsection varianz (end)
+
+\subsection{Kovarianz}
+\label{sub:kovarianz}
+
+\begin{align*}
+	Cov(X,Y) &= {E}\left[ (X-EX)(Y-EY)\right]\\
+			&=  {E}\bigl[(XY - X E(Y) - Y E(X) +  E(X) E(Y))\bigr]\\
+   &= {E}(XY) - {E}(X) {E}(Y) \textcolor{red}{-{E}(Y) {E}(X) + {E}(X) {E}(Y)}\\
+   &=  {E}(XY) - {E}(X) {E}(Y)
+\end{align*} \label{eq:versch_satz_2}
+
+% subsection kovarianz (end)

@@ -1,0 +1,46 @@
+% subsect %%% binare_variable %{{{
+\setcounter{equation}{0}
+Übung 4.5: Bestimmung des $R^2$ sowie $SER$ (siehe \nameref{formula:SER})
+einer binären Regression, bei Umkehrung der Dummy-Variable. Regression vorher
+(1) und jetzt (2):
+
+\begin{align}
+	& \widehat{\text{Lohn}_i} = \beta_0 + \beta_1 \times \text{Mann}_i + u_i \label{eq:lohn_mann}
+\end{align}
+
+\begin{align}
+	\begin{split}
+		\widehat{\text{Lohn}_i} &= \gamma_0 + \gamma_1 \times \text{Frau}_i + v_i \label{eq:lohn_frau}\\
+		& = \gamma_0 + \gamma_1 (1-\text{Mann}_i) + v_i\\
+		& = \underbrace{\gamma_0 + \gamma_1}_{\hat{=}\beta_0} \underbrace{- \gamma_1}_{\hat{=}\beta_1} \times\text{Mann}_i + v_i
+	\end{split}
+\end{align}\\
+
+hieraus folgt:
+
+\begin{align}
+	\begin{cases}
+		\beta_{0}&=\gamma_0 + \gamma_1\\
+	\textcolor{blue}{\beta_1}&\textcolor{blue}{=-\gamma_1}
+	\end{cases}
+	\text{~und~}
+	\begin{cases}
+		\gamma_0&=\beta_0 + \textcolor{blue}{\beta_1}\\
+	\gamma_1&= -\beta_1
+	\end{cases}
+\end{align}
+
+Wegen Beziehung geschätzter Koeffizienten gilt: $\hat{u}_i=\hat{v}_i$
+und es ergibt sich\ldots
+
+\begin{align*}
+	\begin{rcases}
+		SSR&=\sum^{n}_{i=1} \hat{u_i}^2\\
+		SER&=\sqrt{\frac{SSR}{n-1}} \\
+	\end{rcases}
+	\text{bleiben unverändert, und somit auch $R^2$ gleich.}
+	\marginnote{Beachte: $R^2\mDef 1- \frac{SSR}{TSS}$}
+\end{align*}
+
+
+% subsect %%% binare_variable (end) %}}}
