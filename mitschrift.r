@@ -15,15 +15,17 @@ library(gplots)
 library(gdata)      # ?read.xls: Einlesen von '.xls' Spreadsheets
 library(graphics)
 library(plyr)
+library(pastecs)    # Ausgeben statistischer Kennzahlen ("mean","sda","qa"...)
 
 # Bibliotheken betrachten (und hinzufügen)
-.libPaths()
-.libPaths( c( .libPaths(), "~/.R") )
+# .libPaths()
+# .libPaths( c( .libPaths(), "~/.R") )
 
 # # Weitere Pakete nachinstallieren
 # download.file("http://www.lepem.ufc.br/jaa/colorout_1.0-3.tar.gz", destfile = "colorout_1.0-3.tar.gz")
 # install.packages("colorout_1.0-3.tar.gz", type = "source", repos = NULL)
 # library("colorout")
+# download.file("http://www.lepem.ufc.br/jaa/colorout_1.0-3.tar.gz", destfile = "colorout_1.0-3.tar.gz")
 
 # Laden der Pakete# }}}
 # Setzen des eigenen Verzeichnisses# {{{
@@ -31,7 +33,6 @@ library(plyr)
 # setwd("Z:/Zapata/CompStat/")  # Arbeitsordner setzen
 # setwd("/home/zapata/Unimaterialien/Winter1213/CompStat")
 setwd("/home/zapata/Dokumente/Linux/R")
-
 
 # Setzen des eigenen Verzeichnisses# }}}
 # Vektoren und Matrizen # {{{
@@ -87,7 +88,6 @@ df.example <- data.frame(name = x, age = y, sex = z); df.example
 
 # bearbeiten des dataframe
 df.next.frame <- transform(df.example, effort = c(NA,"much","little","much")); df.next.frame
-
 
 # Erstellen eines Dataframe# }}}
 # Auswahl bestimmter Zeilen und Spalten# {{{
@@ -163,7 +163,6 @@ order(x)                    # In welcher Reihenfolge muss zugegriffen
                         # werden, damit der Datensatz am Ende sortiert ist.
 x[order(x)]                 # Als Ausgabe erhalten wir die sortierte Reihenfolge.
 
-
 # Sortieren eines Vektors# }}}
 # Sortierung einer Matrix# {{{
 
@@ -185,11 +184,10 @@ wxyz.ox <- df.wxyz[ox,]; wxyz.ox
 # Sortiert Zeilen des Dataframe nach der oben
 # festgelegten (umgekehrten) Reihenfolge des x-Vektors.
 
-
 # Sortierung einer Matrix# }}}
 
 # Sortierung von Daten# }}}
-# Zusammenführen von Daten # {{{
+# Zusammenfügen von Daten # {{{
 
 # Hinzufügen von Zeilen und Spalten# {{{
 
@@ -217,8 +215,8 @@ cbind("first col", rbind("first row", 1:3, 17:19, c("Thomas","Marian","Anna")))
 df.bg <- df.bg[-5,]; df.bg
 # alt: df.bg[5,] <- NULL
 
-# }}}
-# Zusammenfügen von Datenfiles nach identifizierenden Variablen# {{{
+# Hinzufügen von Zeilen und Spalten# }}}
+# merge - Zusammenführen von Daten# {{{
 
 dat1 <- read.csv("usa.csv", h=T); dat1[1:5,]
 dat2 <- read.csv("usa.csv", h=T)[1:4,1:3]
@@ -239,9 +237,9 @@ dat.merge
 # # alt2: join(dat2,dat3, by.x="pid", by.y="sector") [dazu muss
 # # zunächst das Paket 'plyr' geladen sein.]
 
-# Zusammenfügen von Datenfiles nach identifizierenden Variablen# }}}
+# merge - Zusammenführen von Daten# }}}
 
-# Zusammenführen von Daten # }}}
+# Zusammenfügen von Daten # }}}
 # Datenimport / -export nach Excel # {{{
 
 # Tabelle erstellen# {{{
@@ -270,7 +268,6 @@ read.table('test.csv',header=T,sep=";",row.names=1) # http://stackoverflow.com/a
 read.csv2("test.csv", row.names=1,fill=T, )
 # # Die Endung "csv2" steht für die in Deutschland übliche Trennung mit
 # # Semikolon. Für die us-amerikan. Schreibweise reicht 'read.csv'.
-
 
 # Datensatz einlesen: EPEX
 csv.ew <- read.csv("epex_wind.csv",sep=",",dec=",",fill=T,blank.lines.skip=T)
@@ -319,7 +316,6 @@ truehist(x, h = 0.25, main = "Truehist2")
 truehist (x, main = "Truehist3", breaks = c(-1,2, seq(3,7,0.5),8,20), prob=TRUE)
 # Mit dem Argument 'prob=TRUE' wird gewährleistet, dass die Histogrammfläche den Wert 1 annimmt und an der y-Achse die Dichte abgetragen wird. Diese wächst proportional zur Fläche einer Klasse.
 
-
 # Histogramme# }}}
 # Optimale Klassenwahl (S. 26):# {{{
 
@@ -354,7 +350,6 @@ barplot(HV.x,
 legend(15.5,440, c("eins", "zwei", "drei", "vier"), cex = 1.5, fill = c("black","grey30","grey70","white"), ncol = 2)
 # Barplot mit weiteren Einstellungen zu Farbe, Überschrift, Achsenbeschriftung etc.
 
-
 # Barplot 1# }}}
 # Barplot 2# {{{
 
@@ -365,7 +360,6 @@ HV.xy <- table(x,y); HV.xy
 barplot(HV.xy, col = c(2,4,6,8), main = "Ein anderer Barplot", sub ="Binomialverteilung", xlab ="Ausprägungen", ylab = "Häufigkeit", names.arg = c("Nullen","Einsen"))
 legend(0.2,700, c("eins", "zwei", "drei", "vier"), cex = 1.5, fill = c(2,4,6,8), ncol = 2)
 # Barplot der Binomialverteilung mit Legende.
-
 
 # Barplot 2# }}}
 # Barplot 3 # Alle Farben# {{{
@@ -396,7 +390,6 @@ plot(y, main = "Y-Variable", sub = "Überlagerte Normalverteilung")
 plot(x,y, main = "XY-Variablen", sub = "Auf X bedingte Y-Variable", pch = 4, xlim = c(-10,120), ylim = c(-20,200), type = "p")
 # type p (= Punktdiagramm) oder type l.
 
-
 # Erstellen eines Punktediagramms (S. 31 ff.)# }}}
 # Regressionslinien# {{{
 
@@ -413,7 +406,6 @@ plot(x,y, xlim = c(0,20), ylim = c(-2,4), type = "l", col="red", lwd=2, lty=1, y
 
 # Betrachten der zeitl. Entwick. mittels eines Liniendiagramms
 legend(0,4,"xy-Aktie", lty=1, col=2, ncol = 4, lwd=2, bty="n")
-
 
 # Regressionslinien# }}}
 # Boxplots (S.36)# {{{
@@ -440,7 +432,6 @@ boxplot(rC, boxwex = 0.75,
         xlab = "Aktienkurs",
         ylab = "Rendite", yaxs = "r")
 
-
 # Bestimmung Statistischer Kennzahlen
 stat.rC <- round(c(min(rC),
                    max(min(rC),quantile(rC,0.25)-1.5*IQR(rC)),
@@ -454,7 +445,6 @@ stat.rC <- round(c(min(rC),
 names(stat.rC) <- c("min","whisk.dow","quant.25","median","quant.75","whisk.up","max"); stat.rC
 # # alt: boxplot.stats(rC)$stats
 # # Die Quantile werden hier anders berechnet als oben.
-
 
 # Boxplots (S.36)# }}}
 # QQ-Plots (S. 39)# {{{
@@ -500,7 +490,7 @@ lines(sort(x),pnorm(sort(x),mean(x),sd(x)),col=2, lwd=2)
 # Verteilungsfunktion (S. 45)# {{{
 
 # Quantilsfunktion (S. 47)
-median(x)
+median(x); mean(x)
 quantile(x,prob=0.5)
 # # alt: quantile(x, prob=seq(0,1,.5))      #etc.
 # # entspricht: sum(x)/length(x)
@@ -509,7 +499,6 @@ qda <- quantile(x, probs=seq(0, 1, 0.1)); qda
 # # Die drei Argumente des seq-Befehls sind der Reihe nach der Anfangs- und der
 # # Endwert (hier die Wahrscheinlichkeiten 0 bzw. 1), sowie das Intervall (hier
 # # ein zehntel für Dezile, man kann auch (1/10) schreiben).
-
 
 # Verteilungsfunktion (S. 45)# }}}
 # Lagemaße # {{{
@@ -526,34 +515,34 @@ cov(x,y)
 
 # Standardabweichung (S. 52)
 sd(x)
-# # alt: (sum((x-mean(x))^2/(n-1))^0.5
+# # alt: (sum((x-mean(x))^2/(n-1)))^0.5
 
 # Quartilsabstand
 IQR(x)
 
-
 # Lagemaße # }}}
 # Schiefemaße (S. 53ff) # {{{
 
-# Erstellen der Funktion
-skew.d <- function (x) {
-n <- length (x)
-std <- (sum((x - mean(x))^2)/n)^0.5
-z3 <- 1/n * sum((x - mean(x))^3)
-skew.d <- z3/std^3
-return(skew.d)
-}
-
-
 # Schiefe der Verteilung:
 # mean((x-mean(x))^3)/sd(x)^3
+
+# Erstellen der Funktion
+skew.d <- function(x) {
+    n <- length(x)
+    std <- (sum((x - mean(x))^2)/n)^0.5
+    z3 <- 1/n * sum((x - mean(x))^3)
+    skew.d <- z3/std^3
+    return(skew.d)
+}
+
+# ... unter Erwartungstreue!
 skew <- function(x) {
     n <- length(x)
     skew.d <- skew.d(x)
     skew <- skew.d*n^0.5*(n-1)^0.5/(n-2)
     return(skew)
 }
-
+skew.d(x); skew(x)
 
 # Schiefemaße (S. 53ff) # }}}
 # Wölbungsmaße (S. 55 f.) # {{{
@@ -561,43 +550,60 @@ skew <- function(x) {
 # Wölbung
 set.seed(123)
 x <- round(rlnorm(1000)*1000)
-mean(((x-mean(x))/sd(x))^3)  #Die Verteilung ist steil.
 
+# Erstellen der Funktion
+# mean(((x-mean(x))/sd(x))^3)
+kurtosis <- function(x) {
+    n <- length(x)
+    std <- (sum((x - mean(x))^2)/n)^0.5
+    z4 <- 1/n * sum((x - mean(x))^4)
+    kurtosis <- z4/std^4 - 3
+    return(kurtosis)
+}
 
 # Kurtosis
-mean(((x-mean(x))/(sd(x)))^4)-3; hist(x, nclass="scott")     #Die Verteilung ist stark rechtsschief.
-std <- (sum((x-mean(x))^2)/n)^0.5
-z4 <- 1/n * sum((x-mean(x))^4)
-kurtosis.d <- z4/std^4 -3; kurtosis.d
+# Die Verteilung ist stark rechtsschief, da positiv!
+mean(((x-mean(x))/(sd(x)))^4)-3
+kurtosis.d(x)
+# # hist(x, nclass="scott")
 
 # Wölbungsmaße (S. 55 f.) # }}}
 
 # 3. Häufigkeitsverteilungen # }}}
 # 4. While & For-Schleifen # {{{
 
-# Schleife # {{{
+# Schleife# {{{
 
-names(tab1)
-table(tab1$sector)
-w1 <- tab1$wagerate[tab1$sector==1]; length(w1)
-mean(w1)
-sv <- 0:7;sv
-erg <- rep(0,8);erg
-for (i in 1:8){
-# i <- 1
-wi <- tab1$wagerate[tab1$sector==sv[i]]
-erg[i] <- mean(wi)
+# Beispiel: Ungerade Zahlen
+# comment: counts the number of odd integers in x
+oddcount <- function(x) {
+    k <- 0
+    for (n in x) {
+        if (n %% 2 == 1) k <- k+1
+        # %%: modulo/quotient
+    }
+    return(k)
 }
-max(erg)
+oddcount(c(1,3,5))
+oddcount(c(1,2,3,7,9))
 
-# Schleife # }}}
-# Funktionen # {{{
+# Schleife# }}}
+# Tapply# {{{
 
-myf <- function(a) mean( abs(a - median(a)) )
-max(tapply(tab1$wagerate,tab1$sector,myf))
+soil <- data.frame(treatment = c(rep(c("growth"), times = 7), rep(c("gap"), times = 8)),
+                   response = as.integer(runif(15, min=6, max=200))
+                   ); soil[6:9,]
 
-# Funktionen # }}}
+tapply(X = soil$response, INDEX = soil$treatment, FUN = mean)
+tapply(X = soil$response, INDEX = soil$treatment, FUN = sd)
+tapply(X = soil$response, INDEX = soil$treatment, FUN = quantile)
+library(pastecs); stat.desc(soil)
 
+# Beispiel 2: Standard Derivation
+myf <- function(a) { mean(abs(a - median(a))) }
+max(tapply(soil$response, soil$treatment, myf))
+
+# Tapply# }}}
 # 4. While & For-Schleifen # }}}
 # 5. Wahrscheinlichkeiten # {{{
 
@@ -607,20 +613,21 @@ max(tapply(tab1$wagerate,tab1$sector,myf))
 
 dnorm(0)
 x <- seq(-4,4,0.1)
-fx <- dnorm(x); fx    #Vektor der Länge 81 mit zugehörigen Dichten.
-plot(x,fx,main="Standardnormalverteilung",lwd=2,col=2,type="l")
+fx <- dnorm(x); fx                                                # Vektor der Länge 81 mit zugehörigen Dichten.
+plot(x,fx,main="Standardnormalverteilung",lwd=2,col=2,type="l")   # Geplottete Funktion
+lines(x,fx,main="Standardnormalverteilung2",lwd=5.5,col=3)        # Empirische Verteilung der Ziehung
 
 # }}}
 # p für probability# {{{
 
-pnorm(1.96)   #Integral von minus unendlich bis 1.96
+pnorm(1.96)                                                       # Integral von minus unendlich bis 1.96
 Fx <- pnorm(x);Fx
 plot(x,Fx,main="Standardnormalverteilung",lwd=2,col=2,type="l")
 
 # }}}
 # q für quantile# {{{
 
-qnorm(0.975)      #Mit einer Wahrsch. von 0.975 Erhalten wir dieses Quantil:
+qnorm(0.975)                                                      # Mit einer Wahrsch. von 0.975 Erhalten wir dieses Quantil:
 p <- seq(0.001,0.99,0.001)
 Qp <- qnorm(p)
 plot(p,Qp,main="Standardnormalverteilung",lwd=2,col=2,type="l")
@@ -628,87 +635,85 @@ plot(p,Qp,main="Standardnormalverteilung",lwd=2,col=2,type="l")
 # }}}
 # r für random# {{{
 
+# Erstellen der daten
 z <- rnorm(100000,2,2)                          # 100.000 Standardnormalverteilte Zufallszahlen
-hist(z,prob=T,nclass=100,ylim=c(0,0.45))        # Empir. Verteilung der Zufallszahlen
-lines(x,fx,lwd=1.5,col=2)                       # Empirische Verteilung der Ziehung
+hist(z,prob=T,nclass=100,ylim=c(0,0.25))        # Empir. Verteilung der Zufallszahlen
 mean(z); sd(z)
+
+# Ausgeben der Verteilungsfunktion
 z <- sort(z)
 fz <- dnorm(z,mean(z),sd(z))
-lines(z,fz,col=3,lwd=2)                         # Darstellung der Verteilungsfunktion.
-lines(z,dt(z,5),col=4,lwd=2)                    # Standardisierte T-Verteilung mit 5 Freiheitsgraden.
+lines(x = z, y = fz,col=3,lwd=5)                # Darstellung der Verteilungsfunktion.
+
+# Weitere plots
 plot(0:10,dpois(0:10,2),col=2,lwd=2,type="h")   # Poissonverteilung mit Erwartungswert 2 (ca. 26% Wahrsch. für Ziehen einer 1 usw.)
 hist(runif(1000,-5,1)); dnorm(0)                # Zufällige Gleichverteilung (= R-Uniform).
 
-# }}}
+# r für random# }}}
 
 # 5. Wahrscheinlichkeiten # }}}
 # 6. Regressionsanalyse (S. 103)# {{{
 
 # Künstliche Erzeugung von Daten# {{{
 
+# Aufstellen der Regression
 n <- 100
-b0 <- 2
-b1 <- 1
-set.seed(1)     # entsprechend dem Stochastischen Regressionsmodell
-x <- runif(n)
-xb <- b0 + b1*x        # Deterministischer Zusammenhang laut
-                       # Regressionsmodell
-u <- rnorm(n, sd=.3)   # Einbauen weiterer Störtherme
-y <- xb + u
-mean(y)                # muss 2.51 ergeben
-plot(x,y,pch=19)       # Erzeugen der Punktewolke
+set.seed(1)            # entsprechend dem Stochastischen Regressions-
+x <- runif(n)          # modell erstellen wir die unabhängige Variable x
+b0 <- 2                # Regressionskoeffizient beta_0
+b1 <- 1                # Regressionskoeffizient beta_1
+xb <- b0 + b1*x
 
-# }}}
+# Störtherme
+u <- rnorm(n, sd=.3)   # ... mit Standardabweichung 0.3
+y <- xb + u
+
+# Künstliche Erzeugung von Daten# }}}
 # Methode der kleinsten Quadrate # {{{
 
-# Parameter# {{{
+# Ausgabe des Plots
+mean(y)                                                               # muss 2.51 ergeben
+plot(x,y,pch=19)                                                      # Erzeugen der Punktewolke
+lines(x,xb,col=4)                                                     # Wahrer (eigtl. unbekannter) Zusammenhang
 
-lines(x,xb,col=4)   #Wahrer (eigtl. unbekannter) Zusammenhang
+# Geschätzte Parameter
+b1.d <- cov(x,y)/var(x); b1.d                                         # Erster Steigungsparameter
+b0.d <- mean(y)-b1.d*mean(x); b0.d                                    # Zweiter Steigungsparameter
 
-# ## Geschätzte Parameter
-b1.d <- cov(x,y)/var(x); b1.d                                    # Erster Steigungsparameter
-b0.d <- mean(y)-b1.d*mean(x); b0.d                               # Zweiter Steigungsparameter
-
-# ## Regressionswerte
+# Regressionswerte
 y.d <- b0.d + b1.d*x
-lines(x,y.d,col=2)                                               # Vermutung über die Daten, mit denen die Punktwolke erzeugt wurde.
-legend(0.1,3.4,c("wahr","geschätzt"),cex=0.9,lwd=1,col=c(4,2))   # cex Skaliert die Größe der Daten Hinzufügen einer Legende
+lines(x,y.d,col=2)                                                    # Vermutung über die Daten, mit denen die Punktwolke erzeugt wurde.
+legend(0.1,3.4,c("wahr","geschätzt"),cex=0.9,lwd=1,col=c(4,2))        # cex Skaliert die Größe der Daten Hinzufügen einer Legende
 
-# ## Geschätzte Residuen
+# Geschätzte Residuen
 u.d <- y-y.d
-hist(u.d,nclass=15,main="Histogramm der Gesch. Residuen")
+hist(u.d,nclass=15,main="Histogramm der gesch. Residuen")
 
-# }}}
 # Funktion für lineare Modelle: lm()# {{{
 
-lm(y~x)                                                          # lm() berechnet die Regression und viele weitere Regressionsergebnisse
-
-# Y soll auf x regressiert werden, wir erhalten die
-# geschätzten Parameter
+# Y soll auf x regressiert werden, wir erhalten die geschätzten Parameter
+lm(y~x)                                                               # lm() berechnet die Regression und viele
+                                                                      # weitere Regressionsergebnisse
 
 # Beachte: Intercept (= Achsenabschnitt) wird autom. hinzugefügt.
 # Ohne Intercept erhalten wir die Regression durch den Ursprung
 # ohne Achsenabschnitt: -1 im Modell (bspw. lm(y~x-1))
 
+# Ausgabe des ANOVA
 reg <- lm(y~x)
-names(reg)   #Objekt reg im Arbeitsspeicher mit Regressionsergebnissen
-reg$residuals  # reg hat einige Unterobjekte
+names(reg)                                                            # Objekt reg im Arbeitsspeicher mit Regressionsergebnissen
+reg$residuals                                                         # reg hat einige Unterobjekte
 hist(reg$residuals, main="Histogramm der Regression für Residuals")
-sreg <- summary(reg);sreg    #Die Schätzung von 0,3 ist 0,2823; T-Wert ist Parameter geteilt durch Standardfehler
-
-# }}}
-# Weitere Werte der Regression
-
-# Unterobjekte# {{{
-
+sreg <- summary(reg);sreg                                             # Die Schätzung von 0,3 ist 0,2823; T-Wert
+                                                                      # ist Parameter geteilt durch Standardfehler
+# Unterobjekte
 names(sreg)
 sreg$r.squared
 sreg$coef[2,2]
-# Standardfehler des Parameters
 
-# }}}
+# Funktion für lineare Modelle: lm()# }}}
 
-# }}}
+# Methode der kleinsten Quadrate # }}}
 # Multiple Regression# {{{
 
 n <- 1000
@@ -722,7 +727,7 @@ y <- 2+x1+x2+x3+x4+x5+x6+u
 reg2 <- lm(y~x1+x2+x3+x4+x5+x6)
 summary(reg2)
 
-# }}}
+# Multiple Regression# }}}
 # Erklärte Regression# {{{
 
 d <- read.csv("usa2.csv")
@@ -731,26 +736,9 @@ summary(reg)
 # Intercept: Ein nulljähriger Mann hat 8,9$ pro Stunde, mit jedem Lebensjahr
 # gibt es 40 Cent hinzu, als Frau erhielte man 7,93$ weniger
 
-# }}}
+# Erklärte Regression# }}}
 
 # 6. Regressionsanalyse (S. 103)# }}}
-# 7. Funktionen und Rechenoperationen # {{{
-
-# Sinus & Cosinus# {{{
-
-x <- seq(-pi, pi, len = 65)
-plot(x, sin(x), type="l", col = 2, xlab = expression(phi),
-ylab = expression(f(phi)))
-abline(h=-1:1, v=pi/2*(-6:6), col="gray90")
-lines(x, cos(x), col = 3, lty = 2)
-ex.cs1 <- expression(plain(sin) * phi, paste("cos", phi))   # 2 ways
-utils::str(legend(-3, .9, ex.cs1, lty=1:2, plot=FALSE,
-adj = c(0, .6)))    # adj y !
-legend(-3, .9, ex.cs1, lty=1:2, col=2:3, adj = c(0, .6))     #Zu finden im Anhang: help(legend)
-
-# }}}
-
-# 7. Funktionen und Rechenoperationen # }}}
 
 #######
 ### EOF

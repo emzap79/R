@@ -1,63 +1,64 @@
 \begin{longtabu}to\textwidth{l@{\hspace{3cm}}c@{\hspace{3.0em}}p{0.6\textwidth}}
-	Erwartungswert: $E(X)$ &%{{{
-	\parbox[c]{0.5\textwidth}{
-		\begin{align*}
-				\sum X\cdot P(X=x)\\
-				E(X)=\frac{1}{n}\sum^{n}_{i=1} X=\bar X
-		\end{align*}
-	}
-	&$\begin{dcases}
-		\sum^{J}_{j=1}\lbrack x_jf(x_j)\rbrack\text{~~für X diskret}\\
-		\int^{\infty}_{-\infty}\lbrack xf(x)dx\rbrack\text{~~für X indiskret}
-	\end{dcases}$\\
-	%}}}
-	Bedingter EW: $E(Y|X=x)$ &$\sum y\cdot P(Y=y|X=x)$\\
-	Bedingte Verteilung: $P(Y=y|X=x)$ &$\dfrac{P(Y=y, X=x)}{P(X=x)}$\\
-	Varianz: $Var(X)$ & $E\left(X-E(X)\right)^2$ & $\; E(X^2)-E(X)^2$ \\
-	Standardabweichung: $SD(X)$&$\sqrt{Var(X)}$&$\sqrt{E(X^2)-E(X)^2}$\\
-	Kovarianz:%{{{
-	$cov(X,Y)$ & $E \left[ (X-EX)(Y-EY)\right] $&$ \; E(XY) - E(X)E(Y)$\\
-					 && $cov(X,Y)=0$, falls X u. Y unabh.\\
-			   && $cov(X,X)=E[(X-\mu x)^2]=\sigma^2x$ \\%}}}
-	Korrelation: $corr(X,Y)$  &%{{{
-	$\dfrac{cov(X,Y)}{\sqrt{Var(X)}\sqrt{Var(Y)}}$ & $1\leq corr(X,Y)\leq
-				1$\\\\%}}}
-	Schiefe: g & $\dfrac{E(X-EX)^3}{SD(X)^3}$&$g < 0: \text{linksschief}$; $g < 0: \text{rechtsschief}$\\%{{{%}}}
-	Kurtosis: k  %{{{
-	& $\dfrac{E(X-EX)^4}{SD(X)^4}$ & Schwere der Flanken einer Verteilung\\
-	&&$\Rightarrow k < 3: \text{schwach gewölbt}$\\
-	&&$\Rightarrow k > 3: \text{stark gewölbt}$\\%}}}
-	Koeffizient der Bestimmtheit: $R^2$%{{{
-	\label{formula:R2}
-	&$\dfrac{ESS}{TSS}$
-	&$R^2$ ist der Anteil \emph{erklärter} Variation von $Y_i$ an der Gesamtregression ($\;\hat{=}\;1-\frac{SSR}{TSS}$)\\%}}}
-	Das Angepasste $R^2$: $\bar{R}^2$&$1-\left( \frac{n-1}{n-k-1}\right)\frac{SSR}{TSS}$&Das \frqq adjustierte\flqq{} $R^2$ wird
-	kleiner, da der Effekt der Regressoren auf das Modell herausgerechnet wird.\\
-	Explained Sum of Squares: $ESS$
-	&$\sum^{n}_{i=1} \left( \hat{Y}_i - \bar{\hat{Y}}\right)^2$&Die Summe der
-	durch das Modell erklärten quadrierten Abweichung.\\
-	Residual Sum of Squares: $SSR$
-	& $\sum^{n}_{i=1} \hat{u}_i^2$&Summe der quadrierten Residuen.\\
-	Total Sum of Squares: $TSS$
-	&$\sum^{n}_{i=1} \left( Y_i - \bar Y \right)^2$&$\hat{=}\;ESS + SSR$\\
-	Standardfehler der Regression: $SER$%{{{
-	\label{formula:SER}&
-	$\sqrt{\frac{1}{n-2}\sum \hat u_i^2 }$~~, mit $\sum\hat u_i^2 = SSR$&
-	$\varnothing$-Größe der OLS Residuen\\
-	&&$\Rightarrow SER$: Geschätzte SA von $u$\\
-	&&$\Rightarrow RMSE$: Geschätzte Standardabw. von $u$, ohne Korrektur der
-	Freiheitsgrade.\\%}}}
-	{\parbox[t]{0.5\textwidth}{
-			F-Statistik bei Homoskedastie\\
-			\begin{itemize}
-				\item $k_{\text{unrestr}}=$ {\small Anzahl der Regressoren in der unrestr. Regression.}
-				\item $q=${\small Anzahl der Restriktionen unter der Nullhypothese}
-			\end{itemize}
-	}}
-& $\frac{R^2_{\text{unrestr}} - R^2_{\text{restr}}/q} {1-R^2_{\text{unrestr}}/n-k_{\text{unrestr}}-1}$
-& Wenn die Fehler homoskedastisch sind, folgt die F-Statistik bei
-	Homoskedastie einer $\chi^2_q/q$ -Verteilung in großen Stichproben. Die
-	F-Statistik bei Homoskedastie ist historisch wichtig, aber nicht valide bei
-	Heteroskedastie.\\
-	&
+    Erwartungswert: $E(X)$ &%{{{
+    \parbox[c]{0.5\textwidth}{
+        \begin{align*}
+            \sum X\cdot P(X=x)\\
+            E(X)=\frac{1}{n}\sum^{n}_{i=1} X=\bar X
+        \end{align*}
+    }
+    &$\begin{dcases}
+        \sum^{J}_{j=1}\lbrack x_jf(x_j)\rbrack\text{~~für X diskret}\\
+        \int^{\infty}_{-\infty}\lbrack xf(x)dx\rbrack\text{~~für X indiskret}
+    \end{dcases}$\\
+    %}}}
+    Bedingter EW: $E(Y|X=x)$ &$\sum y\cdot P(Y=y|X=x)$\\
+    Bedingte Verteilung: $P(Y=y|X=x)$ &$\dfrac{P(Y=y, X=x)}{P(X=x)}$\\
+    Varianz: $Var(X)$ & $E\left(X-E(X)\right)^2$ & $\; E(X^2)-E(X)^2$ \\
+    Standardabweichung: $SD(X)$&$\sqrt{Var(X)}$&$\sqrt{E(X^2)-E(X)^2}$\\
+    Kovarianz:%{{{
+    $cov(X,Y)$ & $E \left[ (X-EX)(Y-EY)\right] $&$ \; E(XY) - E(X)E(Y)$\\
+    && $cov(X,Y)=0$, falls X u. Y unabh.\\
+    && $cov(X,X)=E[(X-\mu x)^2]=\sigma^2x$ \\%}}}
+    Korrelation: $corr(X,Y)$  &%{{{
+    $\dfrac{cov(X,Y)}{\sqrt{Var(X)}\sqrt{Var(Y)}}$ & $1\leq corr(X,Y)\leq
+    1$\\\\%}}}
+    Schiefe: g & $\dfrac{E(X-EX)^3}{SD(X)^3}$&$g < 0: \text{linksschief}$; $g > 0: \text{rechtsschief}$\\%{{{%}}}
+    Kurtosis: k  %{{{
+    & $\dfrac{E(X-EX)^4}{SD(X)^4}$ & Schwere der Flanken einer Verteilung\\
+    &&$\Rightarrow k < 3: \text{schwach gewölbt}$\\
+&&$\Rightarrow k > 3: \text{stark gewölbt}$\\%}}}
+    Koeffizient der Bestimmtheit: $R^2$%{{{
+    \label{formula:R2}
+    &$\dfrac{ESS}{TSS}$
+    &$R^2$ ist der Anteil \emph{erklärter} Variation von $Y_i$ an der Gesamtregression ($\;\hat{=}\;1-\frac{SSR}{TSS}$)\\%}}}
+    Das Angepasste $R^2$: $\bar{R}^2$&$1-\left( \frac{n-1}{n-k-1}\right)\frac{SSR}{TSS}$&Das \frqq adjustierte\flqq{} $R^2$ wird
+    kleiner, da der Effekt der Regressoren auf das Modell herausgerechnet wird.\\
+    Explained Sum of Squares: $ESS$
+    &$\sum^{n}_{i=1} \left( \hat{Y}_i - \bar{\hat{Y}}\right)^2$&Die Summe der
+    durch das Modell erklärten quadrierten Abweichung.\\
+    Residual Sum of Squares: $SSR$
+    & $\sum^{n}_{i=1} \hat{u}_i^2$&Summe der quadrierten Residuen.\\
+    Total Sum of Squares: $TSS$
+    &$\sum^{n}_{i=1} \left( Y_i - \bar Y \right)^2$&$\hat{=}\;ESS + SSR$\\
+    Standardfehler der Regression: $SER$%{{{
+    \label{formula:SER}&
+    $\sqrt{\frac{1}{n-2}\sum \hat u_i^2 }$~~, mit $\sum\hat u_i^2 = SSR$&
+    $\varnothing$-Größe der OLS Residuen\\
+    &&$\Rightarrow SER$: Geschätzte SA von $u$\\
+&&$\Rightarrow RMSE$: Geschätzte Standardabw. von $u$, ohne Korrektur der
+    Freiheitsgrade.\\%}}}
+    {\parbox[t]{0.5\textwidth}{
+            F-Statistik bei Homoskedastie\\
+            \begin{itemize}
+                \item $k_{\text{unrestr}}=$ {\small Anzahl der Regressoren in der unrestr. Regression.}
+                \item $q=${\small Anzahl der Restriktionen unter der Nullhypothese}
+            \end{itemize}
+        }
+    }
+    & $\frac{R^2_{\text{unrestr}} - R^2_{\text{restr}}/q} {1-R^2_{\text{unrestr}}/n-k_{\text{unrestr}}-1}$
+    & Wenn die Fehler homoskedastisch sind, folgt die F-Statistik bei
+    Homoskedastie einer $\chi^2_q/q$ -Verteilung in großen Stichproben. Die
+    F-Statistik bei Homoskedastie ist historisch wichtig, aber nicht valide bei
+    Heteroskedastie.\\
+    &
 \end{longtabu}
