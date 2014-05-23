@@ -613,21 +613,20 @@ max(tapply(soil$response, soil$treatment, myf))
 
 dnorm(0)
 x <- seq(-4,4,0.1)
-fx <- dnorm(x); fx                                                # Vektor der Länge 81 mit zugehörigen Dichten.
-plot(x,fx,main="Standardnormalverteilung",lwd=2,col=2,type="l")   # Geplottete Funktion
-lines(x,fx,main="Standardnormalverteilung2",lwd=5.5,col=3)        # Empirische Verteilung der Ziehung
+fx <- dnorm(x); fx    #Vektor der Länge 81 mit zugehörigen Dichten.
+plot(x,fx,main="Standardnormalverteilung",lwd=2,col=2,type="l")
 
 # }}}
 # p für probability# {{{
 
-pnorm(1.96)                                                       # Integral von minus unendlich bis 1.96
+pnorm(1.96)   #Integral von minus unendlich bis 1.96
 Fx <- pnorm(x);Fx
 plot(x,Fx,main="Standardnormalverteilung",lwd=2,col=2,type="l")
 
 # }}}
 # q für quantile# {{{
 
-qnorm(0.975)                                                      # Mit einer Wahrsch. von 0.975 Erhalten wir dieses Quantil:
+qnorm(0.975)      #Mit einer Wahrsch. von 0.975 Erhalten wir dieses Quantil:
 p <- seq(0.001,0.99,0.001)
 Qp <- qnorm(p)
 plot(p,Qp,main="Standardnormalverteilung",lwd=2,col=2,type="l")
@@ -635,85 +634,88 @@ plot(p,Qp,main="Standardnormalverteilung",lwd=2,col=2,type="l")
 # }}}
 # r für random# {{{
 
-# Erstellen der daten
 z <- rnorm(100000,2,2)                          # 100.000 Standardnormalverteilte Zufallszahlen
-hist(z,prob=T,nclass=100,ylim=c(0,0.25))        # Empir. Verteilung der Zufallszahlen
+hist(z,prob=T,nclass=100,ylim=c(0,0.45))        # Empir. Verteilung der Zufallszahlen
+lines(x,fx,lwd=1.5,col=2)                       # Empirische Verteilung der Ziehung
 mean(z); sd(z)
-
-# Ausgeben der Verteilungsfunktion
 z <- sort(z)
 fz <- dnorm(z,mean(z),sd(z))
-lines(x = z, y = fz,col=3,lwd=5)                # Darstellung der Verteilungsfunktion.
-
-# Weitere plots
+lines(z,fz,col=3,lwd=2)                         # Darstellung der Verteilungsfunktion.
+lines(z,dt(z,5),col=4,lwd=2)                    # Standardisierte T-Verteilung mit 5 Freiheitsgraden.
 plot(0:10,dpois(0:10,2),col=2,lwd=2,type="h")   # Poissonverteilung mit Erwartungswert 2 (ca. 26% Wahrsch. für Ziehen einer 1 usw.)
 hist(runif(1000,-5,1)); dnorm(0)                # Zufällige Gleichverteilung (= R-Uniform).
 
-# r für random# }}}
+# }}}
 
 # 5. Wahrscheinlichkeiten # }}}
 # 6. Regressionsanalyse (S. 103)# {{{
 
 # Künstliche Erzeugung von Daten# {{{
 
-# Aufstellen der Regression
 n <- 100
-set.seed(1)            # entsprechend dem Stochastischen Regressions-
-x <- runif(n)          # modell erstellen wir die unabhängige Variable x
-b0 <- 2                # Regressionskoeffizient beta_0
-b1 <- 1                # Regressionskoeffizient beta_1
-xb <- b0 + b1*x
-
-# Störtherme
-u <- rnorm(n, sd=.3)   # ... mit Standardabweichung 0.3
+b0 <- 2
+b1 <- 1
+set.seed(1)     # entsprechend dem Stochastischen Regressionsmodell
+x <- runif(n)
+xb <- b0 + b1*x        # Deterministischer Zusammenhang laut
+                       # Regressionsmodell
+u <- rnorm(n, sd=.3)   # Einbauen weiterer Störtherme
 y <- xb + u
+mean(y)                # muss 2.51 ergeben
+plot(x,y,pch=19)       # Erzeugen der Punktewolke
+
 
 # Künstliche Erzeugung von Daten# }}}
 # Methode der kleinsten Quadrate # {{{
 
-# Ausgabe des Plots
-mean(y)                                                               # muss 2.51 ergeben
-plot(x,y,pch=19)                                                      # Erzeugen der Punktewolke
-lines(x,xb,col=4)                                                     # Wahrer (eigtl. unbekannter) Zusammenhang
+# Parameter# {{{
 
-# Geschätzte Parameter
-b1.d <- cov(x,y)/var(x); b1.d                                         # Erster Steigungsparameter
-b0.d <- mean(y)-b1.d*mean(x); b0.d                                    # Zweiter Steigungsparameter
+lines(x,xb,col=4)   #Wahrer (eigtl. unbekannter) Zusammenhang
 
-# Regressionswerte
+# ## Geschätzte Parameter
+b1.d <- cov(x,y)/var(x); b1.d                                    # Erster Steigungsparameter
+b0.d <- mean(y)-b1.d*mean(x); b0.d                               # Zweiter Steigungsparameter
+
+# ## Regressionswerte
 y.d <- b0.d + b1.d*x
-lines(x,y.d,col=2)                                                    # Vermutung über die Daten, mit denen die Punktwolke erzeugt wurde.
-legend(0.1,3.4,c("wahr","geschätzt"),cex=0.9,lwd=1,col=c(4,2))        # cex Skaliert die Größe der Daten Hinzufügen einer Legende
+lines(x,y.d,col=2)                                               # Vermutung über die Daten, mit denen die Punktwolke erzeugt wurde.
+legend(0.1,3.4,c("wahr","geschätzt"),cex=0.9,lwd=1,col=c(4,2))   # cex Skaliert die Größe der Daten Hinzufügen einer Legende
 
-# Geschätzte Residuen
+# ## Geschätzte Residuen
 u.d <- y-y.d
-hist(u.d,nclass=15,main="Histogramm der gesch. Residuen")
+hist(u.d,nclass=15,main="Histogramm der Gesch. Residuen")
 
+# }}}
 # Funktion für lineare Modelle: lm()# {{{
 
-# Y soll auf x regressiert werden, wir erhalten die geschätzten Parameter
-lm(y~x)                                                               # lm() berechnet die Regression und viele
-                                                                      # weitere Regressionsergebnisse
+lm(y~x)                                                          # lm() berechnet die Regression und viele weitere Regressionsergebnisse
+
+# Y soll auf x regressiert werden, wir erhalten die
+# geschätzten Parameter
 
 # Beachte: Intercept (= Achsenabschnitt) wird autom. hinzugefügt.
 # Ohne Intercept erhalten wir die Regression durch den Ursprung
 # ohne Achsenabschnitt: -1 im Modell (bspw. lm(y~x-1))
 
-# Ausgabe des ANOVA
 reg <- lm(y~x)
-names(reg)                                                            # Objekt reg im Arbeitsspeicher mit Regressionsergebnissen
-reg$residuals                                                         # reg hat einige Unterobjekte
+names(reg)   #Objekt reg im Arbeitsspeicher mit Regressionsergebnissen
+reg$residuals  # reg hat einige Unterobjekte
 hist(reg$residuals, main="Histogramm der Regression für Residuals")
-sreg <- summary(reg);sreg                                             # Die Schätzung von 0,3 ist 0,2823; T-Wert
-                                                                      # ist Parameter geteilt durch Standardfehler
-# Unterobjekte
+sreg <- summary(reg);sreg    #Die Schätzung von 0,3 ist 0,2823; T-Wert ist Parameter geteilt durch Standardfehler
+
+# }}}
+# Weitere Werte der Regression
+
+# Unterobjekte# {{{
+
 names(sreg)
 sreg$r.squared
 sreg$coef[2,2]
+# Standardfehler des Parameters
 
-# Funktion für lineare Modelle: lm()# }}}
+# }}}
 
-# Methode der kleinsten Quadrate # }}}
+# }}}
 # Multiple Regression# {{{
 
 n <- 1000
@@ -727,7 +729,7 @@ y <- 2+x1+x2+x3+x4+x5+x6+u
 reg2 <- lm(y~x1+x2+x3+x4+x5+x6)
 summary(reg2)
 
-# Multiple Regression# }}}
+# }}}
 # Erklärte Regression# {{{
 
 d <- read.csv("usa2.csv")
@@ -736,9 +738,26 @@ summary(reg)
 # Intercept: Ein nulljähriger Mann hat 8,9$ pro Stunde, mit jedem Lebensjahr
 # gibt es 40 Cent hinzu, als Frau erhielte man 7,93$ weniger
 
-# Erklärte Regression# }}}
+# }}}
 
 # 6. Regressionsanalyse (S. 103)# }}}
+# 7. Funktionen und Rechenoperationen # {{{
+
+# Sinus & Cosinus# {{{
+
+x <- seq(-pi, pi, len = 65)
+plot(x, sin(x), type="l", col = 2, xlab = expression(phi),
+ylab = expression(f(phi)))
+abline(h=-1:1, v=pi/2*(-6:6), col="gray90")
+lines(x, cos(x), col = 3, lty = 2)
+ex.cs1 <- expression(plain(sin) * phi, paste("cos", phi))   # 2 ways
+utils::str(legend(-3, .9, ex.cs1, lty=1:2, plot=FALSE,
+adj = c(0, .6)))    # adj y !
+legend(-3, .9, ex.cs1, lty=1:2, col=2:3, adj = c(0, .6))     #Zu finden im Anhang: help(legend)
+
+# }}}
+
+# 7. Funktionen und Rechenoperationen # }}}
 
 #######
 ### EOF
