@@ -1,0 +1,31 @@
+\documentclass{article}
+
+\usepackage{python}
+\title{Test}
+\usepackage{Sweave}
+\begin{document}
+
+% This is TeX code
+Hello, world!
+
+\begin{python}
+# This is python code
+print r'\begin{verbatim}'
+import sys
+print sys.version
+print r'\end{verbatim}'
+\end{python}
+
+More \TeX here. Here's a list:
+\begin{itemize}
+\item What's up?
+\end{itemize}
+
+\begin{Scode}
+# This is R/S code
+print('what up')
+for (i in 1:10) { print(i) }
+\end{Scode}
+
+How was that?
+\end{document}

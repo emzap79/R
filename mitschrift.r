@@ -15,7 +15,15 @@ library(gplots)
 library(gdata)      # ?read.xls: Einlesen von '.xls' Spreadsheets
 library(graphics)
 library(plyr)
+library(knitr)
 library(pastecs)    # Ausgeben statistischer Kennzahlen ("mean","sda","qa"...)
+
+install.packages(c("digest", "evaluate", "formatR", "highlight", "knitr", "parser", "plyr", "Rcpp", "stringr"))
+update.packages(ask = FALSE, repos = c('http://rforge.net', 'http://cran.rstudio.org'))
+
+update.packages(ask = FALSE, repos = c('http://rforge.net', 'http://cran.rstudio.org'))
+install.packages('knitr', repos = c('http://rforge.net', 'http://cran.rstudio.org'), type = 'source')
+library("knitr")
 
 # Bibliotheken betrachten (und hinzufügen)
 # .libPaths()
@@ -564,7 +572,7 @@ kurtosis <- function(x) {
 # Kurtosis
 # Die Verteilung ist stark rechtsschief, da positiv!
 mean(((x-mean(x))/(sd(x)))^4)-3
-kurtosis.d(x)
+kurtosis(x)
 # # hist(x, nclass="scott")
 
 # Wölbungsmaße (S. 55 f.) # }}}
@@ -616,14 +624,14 @@ x <- seq(-4,4,0.1)
 fx <- dnorm(x); fx    #Vektor der Länge 81 mit zugehörigen Dichten.
 plot(x,fx,main="Standardnormalverteilung",lwd=2,col=2,type="l")
 
-# }}}
+# d für density# }}}
 # p für probability# {{{
 
 pnorm(1.96)   #Integral von minus unendlich bis 1.96
 Fx <- pnorm(x);Fx
 plot(x,Fx,main="Standardnormalverteilung",lwd=2,col=2,type="l")
 
-# }}}
+# p für probability# }}}
 # q für quantile# {{{
 
 qnorm(0.975)      #Mit einer Wahrsch. von 0.975 Erhalten wir dieses Quantil:
@@ -631,7 +639,7 @@ p <- seq(0.001,0.99,0.001)
 Qp <- qnorm(p)
 plot(p,Qp,main="Standardnormalverteilung",lwd=2,col=2,type="l")
 
-# }}}
+# q für quantile# }}}
 # r für random# {{{
 
 z <- rnorm(100000,2,2)                          # 100.000 Standardnormalverteilte Zufallszahlen
@@ -645,7 +653,7 @@ lines(z,dt(z,5),col=4,lwd=2)                    # Standardisierte T-Verteilung m
 plot(0:10,dpois(0:10,2),col=2,lwd=2,type="h")   # Poissonverteilung mit Erwartungswert 2 (ca. 26% Wahrsch. für Ziehen einer 1 usw.)
 hist(runif(1000,-5,1)); dnorm(0)                # Zufällige Gleichverteilung (= R-Uniform).
 
-# }}}
+# r für random# }}}
 
 # 5. Wahrscheinlichkeiten # }}}
 # 6. Regressionsanalyse (S. 103)# {{{
