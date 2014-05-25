@@ -18,13 +18,6 @@ library(plyr)
 library(knitr)
 library(pastecs)    # Ausgeben statistischer Kennzahlen ("mean","sda","qa"...)
 
-install.packages(c("digest", "evaluate", "formatR", "highlight", "knitr", "parser", "plyr", "Rcpp", "stringr"))
-update.packages(ask = FALSE, repos = c('http://rforge.net', 'http://cran.rstudio.org'))
-
-update.packages(ask = FALSE, repos = c('http://rforge.net', 'http://cran.rstudio.org'))
-install.packages('knitr', repos = c('http://rforge.net', 'http://cran.rstudio.org'), type = 'source')
-library("knitr")
-
 # Bibliotheken betrachten (und hinzufügen)
 # .libPaths()
 # .libPaths( c( .libPaths(), "~/.R") )
@@ -153,11 +146,11 @@ table(y,z)
 tab <- table(x,y,z)
 tab
 ftab <- ftable(x,y,z); ftab
-ftable (x,y,z, row.vars=c("z","y")
+ftable (x,y,z, row.vars=c("z","y"))
 as.data.frame(ftab)
 margin.table(tab, 1:2)   #Randverteilungen der Ausprägungen von x und y
 margin.table(tab, c(1,3))
-addmargins(margin.table(tab,1:2)
+addmargins(margin.table(tab,1:2))
 
 # Mehrdimensionale Variable# }}}
 
@@ -767,6 +760,4 @@ legend(-3, .9, ex.cs1, lty=1:2, col=2:3, adj = c(0, .6))     #Zu finden im Anhan
 
 # 7. Funktionen und Rechenoperationen # }}}
 
-#######
 ### EOF
-#######
