@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1400972796 "foo.Rnw" "foo.pdf" "foo" 1400972797
+["pdflatex"] 1401533428 "foo.Rnw" "foo.pdf" "foo" 1401533430
   "/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii" 1337017135 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty" 1335995445 7612 c47308d923ec19888707b0f1792b326a ""
   "/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty" 1303254447 7324 11d14f318d865f420e692d4e6c9c18c3 ""
@@ -47,11 +47,11 @@
   "/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def" 1306616590 55368 3c8a0d99822330f2dfabc0dfb09ce897 ""
   "/usr/share/texmf/tex/latex/R/tex/latex/Sweave.sty" 1380284466 1317 b853df6697a9fc1f97296952a3a87692 ""
   "/usr/share/texmf/tex/latex/R/tex/latex/ts1aer.fd" 1380284466 534 31bf41b0c95a7779308b7e122ac3f2e2 ""
-  "foo-fig1.pdf" 1400972795 4946 56c7d2418089500d8ce4dd1dbcaadec8 ""
-  "foo-fig2.pdf" 1400972795 5694 6b064d010a0c2ec925711ae29c2c9432 ""
-  "foo.Rnw" 1400972436 8876 1a0b1867a5682715a7a666b43ee6ce80 ""
-  "foo.aux" 1400972797 488 9fb1b27b3497a1f1a08e112d822d0787 ""
-  "foo.tex" 1400972796 10332 77b7fbd98690856a49aaa65239586b69 ""
+  "foo-fig1.pdf" 1401533428 4963 024ecd9281eb7444644cad5b0b46e310 ""
+  "foo-fig2.pdf" 1401533428 5700 ce48f2f77db86f6917c654330a6b7c22 ""
+  "foo.Rnw" 1401533403 8876 1a0b1867a5682715a7a666b43ee6ce80 ""
+  "foo.aux" 1401533429 488 9fb1b27b3497a1f1a08e112d822d0787 ""
+  "foo.tex" 1401533428 10333 b9fa9758a805cb04bf2e7df4a55f32a3 ""
   (generated)
   "foo.aux"
   "foo.pdf"

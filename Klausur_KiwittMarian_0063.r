@@ -1,6 +1,7 @@
 # Klausur, Ersttermin, Wintersemster 2012
 # Aufgabe 1)
-setwd("Z:/")
+# setwd("Z:/")
+setwd("/home/zapata/Unimaterialien/Sommer2014/R")
 d <- read.csv("usa.csv"); d[1:5,]
 
 # a)
@@ -21,16 +22,17 @@ wrate <- d$wage/d$hours
 lwrate <- log10(wrate)
 d <- cbind(d, wrate, lwrate) ; d[5:1,]
 
-i)
+## i)
 mw <- mean(d$wage) ; mw
+length(d$wage)
 table(d$wage<=mw) ; 6812/length(d$wage)
 # 67,27% der Personen verdienen weniger als der Durchschnitt.
 
-ii)
+## ii)
 table(d$wage[d$sex==1]<=mw) ; 4036/6812
 # von denen die weniger als der Durchschnitt verdienen sind 59.24% Frauen
 
-iii)
+# iii)
 mlw <- mean(d$wrate)
 q0.9 <- quantile(d$wrate, p=0.9); q0.9
 table(d$wrate>=q0.9)

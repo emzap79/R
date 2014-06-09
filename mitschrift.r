@@ -1,4 +1,4 @@
-# vim:fdm=marker:isk+=(,.,_
+# vim:fdm=marker:isk-=(,.,_
 
 # ####################################
 # ## Mitschrift ## Einführung in R ###

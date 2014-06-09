@@ -87,19 +87,19 @@ Call:
 lm(formula = y ~ x)
 
 Residuals:
-    Min      1Q  Median      3Q     Max 
--36.123  -9.321   0.987  10.352  30.110 
+   Min     1Q Median     3Q    Max 
+-43.14 -10.03  -1.73  11.06  43.52 
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
-(Intercept)  -2.0799     4.3823  -0.475    0.637    
-x             1.6317     0.1496  10.909 1.36e-14 ***
+(Intercept)   1.4623     5.2649   0.278    0.782    
+x             1.4889     0.1797   8.286 8.16e-11 ***
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 15.26 on 48 degrees of freedom
-Multiple R-squared:  0.7126,	Adjusted R-squared:  0.7066 
-F-statistic:   119 on 1 and 48 DF,  p-value: 1.358e-14
+Residual standard error: 18.34 on 48 degrees of freedom
+Multiple R-squared:  0.5885,	Adjusted R-squared:   0.58 
+F-statistic: 68.66 on 1 and 48 DF,  p-value: 8.164e-11
 \end{Soutput}
 \end{Schunk}
 (for once we won't show the code chunk itself, look at \verb@foo.Rnw@
@@ -210,9 +210,9 @@ cut-and-paste.
 Simple numbers can be plugged into the text with the \verb@\Sexpr@
 command, for example, the quadratic and cubic regression coefficients
 in the preceding regression were
-$\beta_2 = -0.1677$
+$\beta_2 = 0.1347$
 and
-$\beta_3 = 0.0019$.
+$\beta_3 = -0.0016$.
 Just magic!
 What I actually typed in \verb@foo.Rnw@ was
 \begin{tabbing}
@@ -236,12 +236,10 @@ Analysis of Variance Table
 Model 1: y ~ x
 Model 2: y ~ x + I(x^2)
 Model 3: y ~ x + I(x^2) + I(x^3)
-  Res.Df     RSS Df Sum of Sq      F  Pr(>F)  
-1     48 11180.7                              
-2     47 10144.5  1   1036.15 5.1971 0.02731 *
-3     46  9171.1  1    973.43 4.8825 0.03215 *
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+  Res.Df   RSS Df Sum of Sq      F Pr(>F)
+1     48 16137                           
+2     47 15937  1    200.32 0.6059 0.4403
+3     46 15209  1    728.04 2.2020 0.1447
 \end{Soutput}
 \begin{Sinput}
 > class(foo)
@@ -260,16 +258,16 @@ Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’
 > foo
 \end{Sinput}
 \begin{Soutput}
-  Res.Df       RSS Df Sum of Sq        F     Pr(>F)
-1     48 11180.659 NA        NA       NA         NA
-2     47 10144.506  1  1036.153 5.197103 0.02730910
-3     46  9171.075  1   973.431 4.882505 0.03214702
+  Res.Df      RSS Df Sum of Sq         F    Pr(>F)
+1     48 16137.38 NA        NA        NA        NA
+2     47 15937.06  1  200.3196 0.6058708 0.4403324
+3     46 15209.02  1  728.0397 2.2019714 0.1446546
 \end{Soutput}
 \end{Schunk}
 So now we are ready to turn the matrix \verb@foo@
 into Table~\ref{tab:one}
 % latex table generated in R 3.0.2 by xtable 1.7-3 package
-% Sun May 25 01:06:37 2014
+% Sat May 31 12:50:29 2014
 \begin{table}[tbp]
 \centering
 \caption{ANOVA Table} 
@@ -278,9 +276,9 @@ into Table~\ref{tab:one}
   \hline
  & Res.Df & RSS & Df & Sum of Sq & F & Pr($>$F) \\ 
   \hline
-1 & 48 & 11180.66 &  &  &  &  \\ 
-  2 & 47 & 10144.51 & 1 & 1036.15 & 5.197 & 0.027 \\ 
-  3 & 46 & 9171.08 & 1 & 973.43 & 4.883 & 0.032 \\ 
+1 & 48 & 16137.38 &  &  &  &  \\ 
+  2 & 47 & 15937.06 & 1 & 200.32 & 0.606 & 0.440 \\ 
+  3 & 46 & 15209.02 & 1 & 728.04 & 2.202 & 0.145 \\ 
    \hline
 \end{tabular}
 \end{table}using the R chunk

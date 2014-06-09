@@ -1,4 +1,4 @@
-setwd("/home/zapata/Unimaterialien/Winter12-13/CompStat")
+setwd("/home/zapata/Unimaterialien/Sommer2014/R")
 #Klausur: R
 #Jonas Petong
 #ES0222415903
@@ -20,20 +20,35 @@ dat <- cbind(dat,wrate,lwrate); dat[1:5,]
 
 ##i
 w0 <- subset(dat,sex==0,wrate); w0[1:5,]
-w1 <- subset(dat,sex==1,wrate)
-meanw <- mean(dat$wrate); meanw
-maxw <- max(dat$wrate)
-ltm <- length(dat$wrate[dat$wrate <= meanw])
-
+w1 <- subset(dat,sex==1,wrate); w1[1:5,]
+mwg <- mean(dat$wage); mwg
+mwr <- mean(dat$wrate); mwr
+maxw <- max(dat$wrate); maxw
+ltm <- length(dat$wrate[dat$wrate <= mwr]); ltm
 ltm/length(dat$wrate)*100
+# 69,027% der Personen erhalten weniger als der Durchschnittsstundenlohn
 
 ##ii
-cwage <- cut(wrate, breaks=c(0,mean(wrate),max(wrate)), include.lowest=T, labels=1:2); cwage
-prop.table(table(sex,cwage),2)[1,1]*100
+cwage <- cut(wrate, breaks=c(0,mean(wrate),max(wrate)), include.lowest=T, labels=c("mies","gut"))
+prop.table(table(sex,cwage),2)
+prop.table(table(sex,cwage),2)[2,1]*100
+# vom Anteil der schlechter verdienenden sind 56,26% Frauen
 
 ##iii
 cwage <- cut(wrate, breaks=quantile(wrate,(seq(0,1,.1))), include.lowest=T, labels=1:10)
+prop.table(table(sex, cwage),2)
 prop.table(table(sex, cwage),2)[1,9]*100
+# 60.28% des 90% quantils sind Männlich. Somit sind Frauen in dieser
+# Gehaltsklasse deutlich unterrepräsentiert!
+
+quantile(wrate, seq(0,1,.1))
+quantile(wrate, .9)
+prop.table(table(sex))
+# das appendix +03 zeigt an, um wieviel einheiten das komma nach links verschoben wurde
+
+# Insgesamt gesehen liegt der Männeranteil in diesem Quantil mehr als 23% über
+# dem Durschnitt. Der Anteil der Männer in der Untersuchung insgesamt
+# beträgt dagegen nur knapp die Hälfte (~49%).
 
 #c
 ##i
