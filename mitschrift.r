@@ -33,7 +33,7 @@ library(pastecs)    # Ausgeben statistischer Kennzahlen ("mean","sda","qa"...)
 
 # setwd("Z:/Zapata/CompStat/")  # Arbeitsordner setzen
 # setwd("/home/zapata/Unimaterialien/Winter1213/CompStat")
-setwd("/home/zapata/Dokumente/Linux/R")
+setwd("/home/zapata/Unimaterialien/Sommer2014/R")
 
 # Setzen des eigenen Verzeichnisses# }}}
 # Vektoren und Matrizen # {{{
@@ -252,12 +252,19 @@ df.wxyz.copy <- data.frame(daten$Name, daten$Alter); df.wxyz.copy
 # Als Beispiel exportieren wir unsere Daten "daten"
 # # Nur bestimmte Variablen einlesen in neuen data.frame
 write.table(daten, file = "test.csv", sep = ";", dec=",", col.names=NA)
-read.table('test.csv',header=T,sep=";",row.names=1) # http://stackoverflow.com/a/11608601
-#             |         |       |         |
-#             |         |       |         +-- Lege Spalte der Zeilenbeschriftung fest
-#             |         |       +------------ Trennzeichen
-#             |         +-------------------- Spaltenbeschriftung (T/F)
-#             +------------------------------ Dateiname
+read.table('test.csv', header=T, sep=';', dec=',', stringsAsFactors=F, fill=T, blank.lines.skip=T, col.names='#NA', row.names=1)
+#             |           |       |           |         |                |           |                  |              |
+#             |           |       |           |         |                |           |                  |              +-- Spalte für Zeilenbeschriftung
+#             |           |       |           |         |                |           |                  +-- Zellen enthalten auch Namen mit "#N/A"
+#             |           |       |           |         |                |           +-- ignoriere "leere zellen" der Inputdatei
+#             |           |       |           |         |                | > falls die zeilen unterschiedliche länge aufweisen
+#             |           |       |           |         |                +-- werden automatisch leere zellen hinzugefügt
+#             |           |       |           |         | > belasse zahlen, ohne sie zu konvertieren
+#             |           |       |           |         +-- (http://stackoverflow.com/a/9101988/3569509)
+#             |           |       |           +-- Dezimaltrenner
+#             |           |       +-- Feldtrenner
+#             |           +-- Spaltenbeschriftung (T/F)
+#             +-- Dateiname
 
 # Tabelle erstellen# }}}
 # CSV einlesen# {{{
@@ -358,8 +365,11 @@ y <- sample(0:1, size = 1000, replace = TRUE, prob = c(0.3,0.7))
 HV.xy <- table(x,y); HV.xy
 # Häufigkeitsverteilung der zweiten Variable mit 1000 Realisationen einer Binomialverteilten Stichprobe.
 
-barplot(HV.xy, col = c(2,4,6,8), main = "Ein anderer Barplot", sub ="Binomialverteilung", xlab ="Ausprägungen", ylab = "Häufigkeit", names.arg = c("Nullen","Einsen"))
-legend(0.2,700, c("eins", "zwei", "drei", "vier"), cex = 1.5, fill = c(2,4,6,8), ncol = 2)
+barplot(HV.xy, col = c(2,4,6,8), main = "Ein anderer Barplot", sub
+        ="Binomialverteilung", xlab ="Ausprägungen", ylab = "Häufigkeit",
+        names.arg = c("Nullen","Einsen"))
+legend(0.2,700, c("eins", "zwei", "drei", "vier"), cex = 1.5, fill =
+       c(2,4,6,8), ncol = 2)
 # Barplot der Binomialverteilung mit Legende.
 
 # Barplot 2# }}}
@@ -367,7 +377,9 @@ legend(0.2,700, c("eins", "zwei", "drei", "vier"), cex = 1.5, fill = c(2,4,6,8),
 
 z <- sample(1:8, size = 1000, replace = T, prob = seq(0.1,0.8,0.1))
 HV.xz <- table(z); HV.xz
-barplot(HV.xz, col = 1:8, main = "Barplot der Farben", sub = "Multinomialverteilung", xlab = "Ausprägungen", ylab = "Häufigkeit", names.arg = 1:8)
+barplot(HV.xz, col = 1:8, main = "Barplot der Farben", sub =
+        "Multinomialverteilung", xlab = "Ausprägungen", ylab = "Häufigkeit",
+        names.arg = 1:8)
 
 # Barplot 3 # Alle Farben# }}}
 
@@ -443,7 +455,8 @@ stat.rC <- round(c(min(rC),
                    max(rC)),4)
 
 # Beschriftung und Ausgabe gerundeter Kennzahlen
-names(stat.rC) <- c("min","whisk.dow","quant.25","median","quant.75","whisk.up","max"); stat.rC
+names(stat.rC) <- c("min","whisk.dow","quant.25","median","quant.75","whisk.up","max")
+stat.rC
 # # alt: boxplot.stats(rC)$stats
 # # Die Quantile werden hier anders berechnet als oben.
 
@@ -598,6 +611,7 @@ soil <- data.frame(treatment = c(rep(c("growth"), times = 7), rep(c("gap"), time
 tapply(X = soil$response, INDEX = soil$treatment, FUN = mean)
 tapply(X = soil$response, INDEX = soil$treatment, FUN = sd)
 tapply(X = soil$response, INDEX = soil$treatment, FUN = quantile)
+summary(soil)
 library(pastecs); stat.desc(soil)
 
 # Beispiel 2: Standard Derivation
@@ -699,10 +713,11 @@ lm(y~x)                                                          # lm() berechne
 # ohne Achsenabschnitt: -1 im Modell (bspw. lm(y~x-1))
 
 reg <- lm(y~x)
-names(reg)   #Objekt reg im Arbeitsspeicher mit Regressionsergebnissen
-reg$residuals  # reg hat einige Unterobjekte
+names(reg)                  # Objekt reg im Arbeitsspeicher mit Regressionsergebnissen
+reg$residuals               # reg hat einige Unterobjekte
+sreg <- summary(reg);sreg   # Die Schätzung von 0,3 ist 0,2823; T-Wert ist
+                            # Parameter geteilt durch Standardfehler
 hist(reg$residuals, main="Histogramm der Regression für Residuals")
-sreg <- summary(reg);sreg    #Die Schätzung von 0,3 ist 0,2823; T-Wert ist Parameter geteilt durch Standardfehler
 
 # }}}
 # Weitere Werte der Regression
@@ -759,5 +774,116 @@ legend(-3, .9, ex.cs1, lty=1:2, col=2:3, adj = c(0, .6))     #Zu finden im Anhan
 # }}}
 
 # 7. Funktionen und Rechenoperationen # }}}
+# 8. Sonstige Übungsaufgaben# {{{
 
+# Klausur
+
+dat.orig <- read.csv("usa.csv", row.names=1)
+dat <- read.csv("usa.csv", row.names=1)
+
+#Aufgabe 1
+#a
+dat.orig[1:5,]
+mean(dat.orig$age)
+sapply(subset(dat.orig,sex==1,"age"),mean) #Durchschnittsalter der Frauen
+sapply(subset(dat.orig,sex==0,"age"),mean) #Durchschnittsalter der Männer
+
+#b
+age <- dat$age; wrate <- dat$wage/dat$hours; sex <- dat$sex
+lwrate <- log10(wrate); lwrate[1:5]
+dat <- cbind(dat,wrate,lwrate); dat[1:5,]
+
+##i
+wr0 <- subset(dat,sex==0,wrate); wr0[1:5,]
+wr1 <- subset(dat,sex==1,wrate); wr1[1:5,]
+mwg <- mean(dat$wage); mwg
+mwr <- mean(dat$wrate); mwr
+maxw <- max(dat$wrate); maxw
+ltm <- length(dat$wrate[dat$wrate <= mwr]); ltm
+ltm/length(dat$wrate)*100
+# 69,027% der Personen erhalten weniger als der Durchschnittsstundenlohn
+
+##ii
+cwage <- cut(wrate, breaks=c(0,mean(wrate),max(wrate)), include.lowest=T, labels=c("mies","gut"))
+prop.table(table(sex,cwage),2)
+prop.table(table(sex,cwage),2)[2,1]*100
+# vom Anteil der schlechter verdienenden sind 56,26% Frauen
+
+##iii
+cwage <- cut(wrate, breaks=quantile(wrate,(seq(0,1,.1))), include.lowest=T, labels=1:10)
+prop.table(table(sex, cwage),2)
+prop.table(table(sex, cwage),2)[1,9]*100
+# 60.28% des 90% quantils sind Männlich. Somit sind Frauen in dieser
+# Gehaltsklasse deutlich unterrepräsentiert!
+
+quantile(wrate, seq(0,1,.1))
+quantile(wrate, .9)
+prop.table(table(sex))
+# das appendix +03 zeigt an, um wieviel einheiten das komma nach links verschoben wurde
+
+# Insgesamt gesehen liegt der Männeranteil in diesem Quantil mehr als 23% über
+# dem Durschnitt. Der Anteil der Männer in der Untersuchung insgesamt
+# beträgt dagegen nur knapp die Hälfte (~49%).
+
+#c
+##i
+wage <- dat$wage
+cor(wrate, wage)
+
+##ii
+w1 <- subset(dat, sex==1, wage)
+cor(w1, wr1)
+
+##iii
+w0 <- subset(dat, sex==0, wage)
+cor(w0, wr0)
+
+##iv
+#Begründung: Frauen arbeiten in der Regel öfter in Teilzeit als Männer, daher
+#ist die Korrelation zwischen Jahreslohn und Stundenlohn bei Männern stärker
+#ausgeprägt (0.94 zu 0.75).
+
+
+#Aufgabe 2
+#a
+table(dat$sector)
+tapply(wrate, dat$sector, mean)
+
+#b
+median(wrate)
+sector <- dat$sector
+cwage <- cut(wrate, breaks=c(0,median(wrate),max(wrate)),
+             include.lowest=T,prob=T, labels=1:2); levels(cwage)
+prop.table(table(cwage,sector),2)
+prop.table(table(cwage,sector),2)[1,]
+# Prozentualer Anteil Arbeitnehmer mit Unterdurchschnittsverdienst, aufgeteilt
+# nach Sektoren.
+
+#c
+sd(wrate)/mean(wrate)
+# Variationskoeffizient: 2.485
+
+#Aufgabe 3
+
+#a
+n <- nrow(dat)
+u <- rnorm(n)
+est.wr <- lm(wrate+u ~ age); est.wr
+#Mit jedem zusätzlichen Lebensjahr verdient ein Mann 41 Cent mehr.
+
+#b
+est.lwr <- lm(lwrate+u ~ age); est.lwr
+summary(est.lwr)
+# Mit jedem zusätzlichen Lebensjahr steigt der logarithmierte Lohn um 0.0079, dh.
+# der Lohn steigt im Mittel jährlich um ~0.008%.
+
+#c
+d <- rep(0:1,n)
+lwdummy <- lwrate+u+d
+lm(lwdummy ~ age)$fitted.values
+
+#Aufgabe 4
+summary(lwrate)
+
+# 8. Sonstige Übungsaufgaben# }}}
 ### EOF

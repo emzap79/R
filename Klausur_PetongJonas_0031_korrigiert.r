@@ -19,8 +19,8 @@ lwrate <- log10(wrate); lwrate[1:5]
 dat <- cbind(dat,wrate,lwrate); dat[1:5,]
 
 ##i
-w0 <- subset(dat,sex==0,wrate); w0[1:5,]
-w1 <- subset(dat,sex==1,wrate); w1[1:5,]
+wr0 <- subset(dat,sex==0,wrate); wr0[1:5,]
+wr1 <- subset(dat,sex==1,wrate); wr1[1:5,]
 mwg <- mean(dat$wage); mwg
 mwr <- mean(dat$wrate); mwr
 maxw <- max(dat$wrate); maxw
@@ -56,12 +56,12 @@ wage <- dat$wage
 cor(wrate, wage)
 
 ##ii
-wage1 <- subset(dat, sex==1, wage)
-cor(wage1, w1)
+w1 <- subset(dat, sex==1, wage)
+cor(w1, wr1)
 
 ##iii
-wage0 <- subset(dat, sex==0, wage)
-cor(wage0, w0)
+w0 <- subset(dat, sex==0, wage)
+cor(w0, wr0)
 
 ##iv
 #Begründung: Frauen arbeiten in der Regel öfter in Teilzeit als Männer, daher
@@ -78,30 +78,29 @@ tapply(wrate, dat$sector, mean)
 median(wrate)
 sector <- dat$sector
 cwage <- cut(wrate, breaks=c(0,median(wrate),max(wrate)),
-  include.lowest=T,prob=T, labels=1:2); cwage
+             include.lowest=T,prob=T, labels=1:2); levels(cwage)
+prop.table(table(cwage,sector),2)
 prop.table(table(cwage,sector),2)[1,]
-
-###
-mwr <- median(dat$wrate)
-quantile(dat$wrate,prob=.5)
-table(dat$wrate<=mwr)
-apply(dat$wrate, dat$sector) <= tapply(dat$wrate, dat$sector, median)
-###
+# Prozentualer Anteil Arbeitnehmer mit Unterdurchschnittsverdienst, aufgeteilt
+# nach Sektoren.
 
 #c
 sd(wrate)/mean(wrate)
+# Variationskoeffizient: 2.485
 
 #Aufgabe 3
 
 #a
 n <- nrow(dat)
-u <- rnorm(nrow(dat))
-lm(wrate+u ~ age)
-#Mit jedem zusätzlichen Lebensjahr verdient ein Mann 40 Cent mehr.
+u <- rnorm(n)
+est.wr <- lm(wrate+u ~ age); est.wr
+#Mit jedem zusätzlichen Lebensjahr verdient ein Mann 41 Cent mehr.
 
 #b
-summary(lm(lwrate+u ~ age))
-#Mit jedem zusätzlichen Lebensjahr steigt der logarithmierte Lohn um 0.008.
+est.lwr <- lm(lwrate+u ~ age); est.lwr
+summary(est.lwr)
+# Mit jedem zusätzlichen Lebensjahr steigt der logarithmierte Lohn um 0.0079, dh.
+# der Lohn steigt im Mittel jährlich um ~0.008%.
 
 #c
 d <- rep(0:1,n)
